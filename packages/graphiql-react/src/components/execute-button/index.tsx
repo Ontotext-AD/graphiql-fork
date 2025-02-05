@@ -6,6 +6,8 @@ import { Tooltip } from '../tooltip';
 import { KEY_MAP, formatShortcutForOS } from '../../constants';
 import { pick } from '../../utility';
 import './index.css';
+import { useContext } from 'react';
+import { TranslationContext } from '../translation';
 
 export const ExecuteButton: FC = () => {
   const { setOperationName, run, stop } = useGraphiQLActions();
@@ -22,7 +24,16 @@ export const ExecuteButton: FC = () => {
     operations.length > 1 && typeof overrideOperationName !== 'string';
   const isRunning = isFetching || isSubscribed;
 
-  const label = `${isRunning ? 'Stop' : 'Execute'} query (${formatShortcutForOS(KEY_MAP.runQuery.key, 'Cmd')})`;
+  const { currentLanguage, translationService } =
+    useContext(TranslationContext);
+
+  const buttonTranslationKey = isRunning
+    ? 'graphiql.toolbar.btn.stop_query.tooltip'
+    : 'graphiql.toolbar.btn.execute_query.tooltip';
+  const label = translationService.translate(
+    buttonTranslationKey,
+    currentLanguage,
+  );
   const buttonProps = {
     type: 'button' as const,
     className: 'graphiql-execute-button',

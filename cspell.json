@@ -19,6 +19,7 @@
     "**/esbuild.js",
     ".eslintrc.js",
     ".vscode/extensions.json",
+    "packages/graphiql-react/src/assets/**/*.json",
     "packages/monaco-graphql/test/monaco-editor.test.ts",
     "working-group"
   ],
