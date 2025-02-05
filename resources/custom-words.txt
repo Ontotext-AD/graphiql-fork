@@ -231,3 +231,6 @@ zdravo
 أهلاً
 سلام
 हेलो
+Éditeur
+l'éditeur
+Afficher

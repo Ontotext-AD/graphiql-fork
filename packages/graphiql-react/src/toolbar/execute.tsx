@@ -4,6 +4,8 @@ import { PlayIcon, StopIcon } from '../icons';
 import { DropdownMenu, Tooltip } from '../ui';
 
 import './execute.css';
+import { useContext } from 'react';
+import { TranslationContext } from '../translation';
 
 export function ExecuteButton() {
   const { queryEditor, setOperationName } = useEditorContext({
@@ -16,11 +18,20 @@ export function ExecuteButton() {
       caller: ExecuteButton,
     });
 
+  const { currentLanguage, translationService } =
+    useContext(TranslationContext);
+
   const operations = queryEditor?.operations || [];
   const hasOptions = operations.length > 1 && typeof operationName !== 'string';
   const isRunning = isFetching || isSubscribed;
 
-  const label = `${isRunning ? 'Stop' : 'Execute'} query (Ctrl-Enter)`;
+  const buttonTranslationKey = isRunning
+    ? 'graphiql.toolbar.btn.stop_query.tooltip'
+    : 'graphiql.toolbar.btn.execute_query.tooltip';
+  const label = translationService.translate(
+    buttonTranslationKey,
+    currentLanguage,
+  );
   const buttonProps = {
     type: 'button' as const,
     className: 'graphiql-execute-button',
