@@ -117,3 +117,4 @@ export type {
   StorageContextType,
 } from './storage';
 export type { Theme } from './theme';
+export * from './translation';

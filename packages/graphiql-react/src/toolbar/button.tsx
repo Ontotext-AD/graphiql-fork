@@ -1,18 +1,28 @@
-import { forwardRef, MouseEventHandler, useCallback, useState } from 'react';
+import {
+  forwardRef,
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { clsx } from 'clsx';
 import { Tooltip, UnStyledButton } from '../ui';
 
 import './button.css';
+import { TranslationContext } from '../translation';
 
 type ToolbarButtonProps = {
-  label: string;
+  label?: string;
+  labelKey?: string;
 };
 
 export const ToolbarButton = forwardRef<
   HTMLButtonElement,
   ToolbarButtonProps & JSX.IntrinsicElements['button']
->(({ label, onClick, ...props }, ref) => {
+>(({ label, onClick, labelKey, ...props }, ref) => {
   const [error, setError] = useState<Error | null>(null);
+  const { currentLanguage, translationService } =
+    useContext(TranslationContext);
   const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
     event => {
       try {
@@ -29,8 +39,12 @@ export const ToolbarButton = forwardRef<
     [onClick],
   );
 
+  const translatedLabel =
+    label ||
+    (labelKey ? translationService.translate(labelKey, currentLanguage) : '');
+
   return (
-    <Tooltip label={label}>
+    <Tooltip label={translatedLabel}>
       <UnStyledButton
         {...props}
         ref={ref}
@@ -41,7 +55,7 @@ export const ToolbarButton = forwardRef<
           props.className,
         )}
         onClick={handleClick}
-        aria-label={error ? error.message : label}
+        aria-label={error ? error.message : translatedLabel}
         aria-invalid={error ? 'true' : props['aria-invalid']}
       />
     </Tooltip>

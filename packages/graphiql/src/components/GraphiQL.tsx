@@ -16,6 +16,7 @@ import React, {
   useState,
   useEffect,
   useMemo,
+  useContext,
 } from 'react';
 
 import {
@@ -61,6 +62,10 @@ import {
   VariableEditor,
   WriteableEditorProps,
   isMacOs,
+  TranslationProvider,
+  TranslateText,
+  LanguageSelector,
+  TranslationContext,
 } from '@graphiql/react';
 
 const majorVersion = parseInt(React.version.slice(0, 2), 10);
@@ -169,13 +174,15 @@ export function GraphiQL({
       validationRules={validationRules}
       variables={variables}
     >
-      <GraphiQLInterface
-        confirmCloseTab={confirmCloseTab}
-        showPersistHeadersSettings={shouldPersistHeaders !== false}
-        disableTabs={props.disableTabs ?? false}
-        forcedTheme={props.forcedTheme}
-        {...props}
-      />
+      <TranslationProvider {...props}>
+        <GraphiQLInterface
+          confirmCloseTab={confirmCloseTab}
+          showPersistHeadersSettings={shouldPersistHeaders !== false}
+          disableTabs={props.disableTabs ?? false}
+          forcedTheme={props.forcedTheme}
+          {...props}
+        />
+      </TranslationProvider>
     </GraphiQLProvider>
   );
 }
@@ -265,6 +272,8 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
   const copy = useCopyQuery({ onCopyQuery: props.onCopyQuery });
   const merge = useMergeQuery();
   const prettify = usePrettifyEditors();
+  const { currentLanguage, translationService } =
+    useContext(TranslationContext);
 
   const { theme, setTheme } = useTheme(props.defaultTheme);
 
@@ -349,16 +358,22 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
     isChildComponentType(child, GraphiQL.Toolbar),
   ) || (
     <>
-      <ToolbarButton onClick={prettify} label="Prettify query (Shift-Ctrl-P)">
+      <ToolbarButton
+        onClick={prettify}
+        labelKey="graphiql.toolbar.btn.prettify_query.tooltip"
+      >
         <PrettifyIcon className="graphiql-toolbar-icon" aria-hidden="true" />
       </ToolbarButton>
       <ToolbarButton
         onClick={merge}
-        label="Merge fragments into query (Shift-Ctrl-M)"
+        labelKey="graphiql.toolbar.btn.merge_fragment.tooltip"
       >
         <MergeIcon className="graphiql-toolbar-icon" aria-hidden="true" />
       </ToolbarButton>
-      <ToolbarButton onClick={copy} label="Copy query (Shift-Ctrl-C)">
+      <ToolbarButton
+        onClick={copy}
+        labelKey="graphiql.toolbar.btn.copy_query.tooltip"
+      >
         <CopyIcon className="graphiql-toolbar-icon" aria-hidden="true" />
       </ToolbarButton>
       {props.toolbar?.additionalContent}
@@ -470,13 +485,17 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
     }
   }, []);
 
+  const addTabLabel = translationService.translate(
+    'component.add_tab.btn.tooltip',
+    currentLanguage,
+  );
   const addTab = (
-    <Tooltip label="Add tab">
+    <Tooltip label={addTabLabel}>
       <UnStyledButton
         type="button"
         className="graphiql-tab-add"
         onClick={handleAddTab}
-        aria-label="Add tab"
+        aria-label={addTabLabel}
       >
         <PlusIcon aria-hidden="true" />
       </UnStyledButton>
@@ -554,12 +573,19 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
             })}
           </div>
           <div className="graphiql-sidebar-section">
-            <Tooltip label="Re-fetch GraphQL schema">
+            <Tooltip
+              label={
+                <TranslateText translationKey="graphiql.sidebar.btn.refresh_graphql_schema" />
+              }
+            >
               <UnStyledButton
                 type="button"
                 disabled={schemaContext.isFetching}
                 onClick={handleRefetchSchema}
-                aria-label="Re-fetch GraphQL schema"
+                aria-label={translationService.translate(
+                  'graphiql.sidebar.btn.refresh_graphql_schema',
+                  currentLanguage,
+                )}
               >
                 <ReloadIcon
                   className={schemaContext.isFetching ? 'graphiql-spin' : ''}
@@ -567,22 +593,36 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                 />
               </UnStyledButton>
             </Tooltip>
-            <Tooltip label="Open short keys dialog">
+            <Tooltip
+              label={
+                <TranslateText translationKey="graphiql.sidebar.btn.open_short_keys_dialog" />
+              }
+            >
               <UnStyledButton
                 type="button"
                 data-value="short-keys"
                 onClick={handleShowDialog}
-                aria-label="Open short keys dialog"
+                aria-label={translationService.translate(
+                  'graphiql.sidebar.btn.open_short_keys_dialog',
+                  currentLanguage,
+                )}
               >
                 <KeyboardShortcutIcon aria-hidden="true" />
               </UnStyledButton>
             </Tooltip>
-            <Tooltip label="Open settings dialog">
+            <Tooltip
+              label={
+                <TranslateText translationKey="graphiql.sidebar.btn.open_settings_dialog" />
+              }
+            >
               <UnStyledButton
                 type="button"
                 data-value="settings"
                 onClick={handleShowDialog}
-                aria-label="Open settings dialog"
+                aria-label={translationService.translate(
+                  'graphiql.sidebar.btn.open_settings_dialog',
+                  currentLanguage,
+                )}
               >
                 <SettingsIcon aria-hidden="true" />
               </UnStyledButton>
@@ -693,7 +733,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                         onClick={handleToolsTabClick}
                         data-name="variables"
                       >
-                        Variables
+                        <TranslateText translationKey="graphiql.editor.tools.btn.variables.label" />
                       </UnStyledButton>
                       {isHeadersEditorEnabled && (
                         <UnStyledButton
@@ -707,15 +747,17 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                           onClick={handleToolsTabClick}
                           data-name="headers"
                         >
-                          Headers
+                          <TranslateText translationKey="graphiql.editor.tools.btn.headers.label" />
                         </UnStyledButton>
                       )}
 
                       <Tooltip
                         label={
-                          editorToolsResize.hiddenElement === 'second'
-                            ? 'Show editor tools'
-                            : 'Hide editor tools'
+                          editorToolsResize.hiddenElement === 'second' ? (
+                            <TranslateText translationKey="graphiql.editor.tools.btn.open_editor.tooltip" />
+                          ) : (
+                            <TranslateText translationKey="graphiql.editor.tools.btn.close_editor.tooltip" />
+                          )
                         }
                       >
                         <UnStyledButton
@@ -800,7 +842,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
         >
           <div className="graphiql-dialog-header">
             <Dialog.Title className="graphiql-dialog-title">
-              Short Keys
+              <TranslateText translationKey="dialog.short_keys.title" />
             </Dialog.Title>
             <Dialog.Close />
           </div>
@@ -814,21 +856,30 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
         >
           <div className="graphiql-dialog-header">
             <Dialog.Title className="graphiql-dialog-title">
-              Settings
+              <TranslateText translationKey="dialog.settings.title" />
             </Dialog.Title>
             <Dialog.Close />
           </div>
+          <div className="graphiql-dialog-section">
+            <div>
+              <div className="graphiql-dialog-section-title">
+                <TranslateText translationKey="dialog.settings.language.title" />
+              </div>
+              <div className="graphiql-dialog-section-caption">
+                <TranslateText translationKey="dialog.settings.language.description" />
+              </div>
+            </div>
+            <LanguageSelector />
+          </div>
+
           {props.showPersistHeadersSettings ? (
             <div className="graphiql-dialog-section">
               <div>
                 <div className="graphiql-dialog-section-title">
-                  Persist headers
+                  <TranslateText translationKey="dialog.settings.persisted_headers.title" />
                 </div>
                 <div className="graphiql-dialog-section-caption">
-                  Save headers upon reloading.{' '}
-                  <span className="graphiql-warning-text">
-                    Only enable if you trust this device.
-                  </span>
+                  <TranslateText translationKey="dialog.settings.persisted_headers.description" />
                 </div>
               </div>
               <ButtonGroup>
@@ -839,7 +890,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                   data-value="true"
                   onClick={handlePersistHeaders}
                 >
-                  On
+                  <TranslateText translationKey="dialog.settings.persisted_headers.btn.on" />
                 </Button>
                 <Button
                   type="button"
@@ -847,7 +898,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                   className={editorContext.shouldPersistHeaders ? '' : 'active'}
                   onClick={handlePersistHeaders}
                 >
-                  Off
+                  <TranslateText translationKey="dialog.settings.persisted_headers.btn.off" />
                 </Button>
               </ButtonGroup>
             </div>
@@ -855,9 +906,11 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
           {!forcedTheme && (
             <div className="graphiql-dialog-section">
               <div>
-                <div className="graphiql-dialog-section-title">Theme</div>
+                <div className="graphiql-dialog-section-title">
+                  <TranslateText translationKey="dialog.settings.theme.title" />
+                </div>
                 <div className="graphiql-dialog-section-caption">
-                  Adjust how the interface appears.
+                  <TranslateText translationKey="dialog.settings.theme.description" />
                 </div>
               </div>
               <ButtonGroup>
@@ -866,7 +919,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                   className={theme === null ? 'active' : ''}
                   onClick={handleChangeTheme}
                 >
-                  System
+                  <TranslateText translationKey="dialog.settings.theme.btn.system" />
                 </Button>
                 <Button
                   type="button"
@@ -874,7 +927,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                   data-theme="light"
                   onClick={handleChangeTheme}
                 >
-                  Light
+                  <TranslateText translationKey="dialog.settings.theme.btn.light" />
                 </Button>
                 <Button
                   type="button"
@@ -882,7 +935,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                   data-theme="dark"
                   onClick={handleChangeTheme}
                 >
-                  Dark
+                  <TranslateText translationKey="dialog.settings.theme.btn.dark" />
                 </Button>
               </ButtonGroup>
             </div>
@@ -891,10 +944,10 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
             <div className="graphiql-dialog-section">
               <div>
                 <div className="graphiql-dialog-section-title">
-                  Clear storage
+                  <TranslateText translationKey="dialog.settings.clear_storage.title" />
                 </div>
                 <div className="graphiql-dialog-section-caption">
-                  Remove all locally stored data and start fresh.
+                  <TranslateText translationKey="dialog.settings.clear_storage.description" />
                 </div>
               </div>
               <Button
@@ -904,9 +957,15 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
                 onClick={handleClearData}
               >
                 {{
-                  success: 'Cleared data',
-                  error: 'Failed',
-                }[clearStorageStatus!] || 'Clear data'}
+                  success: (
+                    <TranslateText translationKey="dialog.settings.clear_storage.btn.cleared_data" />
+                  ),
+                  error: (
+                    <TranslateText translationKey="dialog.settings.clear_storage.btn.error" />
+                  ),
+                }[clearStorageStatus!] || (
+                  <TranslateText translationKey="dialog.settings.clear_storage.btn.clear_data" />
+                )}
               </Button>
             </div>
           ) : null}
@@ -919,17 +978,17 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
 const modifier = isMacOs ? '⌘' : 'Ctrl';
 
 const SHORT_KEYS = Object.entries({
-  'Search in editor': [modifier, 'F'],
-  'Search in documentation': [modifier, 'K'],
-  'Execute query': [modifier, 'Enter'],
-  'Prettify editors': ['Ctrl', 'Shift', 'P'],
-  'Merge fragments definitions into operation definition': [
+  'dialog.short_keys.function.search_in_editor': [modifier, 'F'],
+  'dialog.short_keys.function.search_in_documentation': [modifier, 'K'],
+  'dialog.short_keys.function.execute_query': [modifier, 'Enter'],
+  'dialog.short_keys.function.prettify_editors': ['Ctrl', 'Shift', 'P'],
+  'dialog.short_keys.function.merge_fragments_into_definition': [
     'Ctrl',
     'Shift',
     'M',
   ],
-  'Copy query': ['Ctrl', 'Shift', 'C'],
-  'Re-fetch schema using introspection': ['Ctrl', 'Shift', 'R'],
+  'dialog.short_keys.function.copy_query': ['Ctrl', 'Shift', 'C'],
+  'dialog.short_keys.function.refresh_schema': ['Ctrl', 'Shift', 'R'],
 });
 
 function ShortKeys({ keyMap }: { keyMap: string }): ReactElement {
@@ -938,8 +997,12 @@ function ShortKeys({ keyMap }: { keyMap: string }): ReactElement {
       <table className="graphiql-table">
         <thead>
           <tr>
-            <th>Short Key</th>
-            <th>Function</th>
+            <th>
+              <TranslateText translationKey="dialog.short_keys.header.short_key" />
+            </th>
+            <th>
+              <TranslateText translationKey="dialog.short_keys.header.function" />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -953,22 +1016,18 @@ function ShortKeys({ keyMap }: { keyMap: string }): ReactElement {
                   </Fragment>
                 ))}
               </td>
-              <td>{title}</td>
+              <td>
+                <TranslateText translationKey={title} />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <p>
-        The editors use{' '}
-        <a
-          href="https://codemirror.net/5/doc/manual.html#keymaps"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          CodeMirror Key Maps
-        </a>{' '}
-        that add more short keys. This instance of Graph<em>i</em>QL uses{' '}
-        <code>{keyMap}</code>.
+        <TranslateText
+          translationKey="dialog.short_keys.footer"
+          translationParams={{ keyMap }}
+        />
       </p>
     </div>
   );
