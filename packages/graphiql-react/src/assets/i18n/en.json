@@ -1,0 +1,113 @@
+{
+  "graphiql": {
+    "sidebar": {
+      "btn": {
+        "refresh_graphql_schema": "Re-fetch GraphQL schema",
+        "open_short_keys_dialog": "Open short keys dialog",
+        "open_settings_dialog": "Open settings dialog"
+      }
+    },
+    "editor": {
+      "tools": {
+        "btn": {
+          "variables": {
+            "label": "Variables"
+          },
+          "headers": {
+            "label": "Headers"
+          },
+          "open_editor": {
+            "tooltip": "Show editor tools"
+          },
+          "close_editor": {
+            "tooltip": "Hide editor tools"
+          }
+        }
+      }
+    },
+    "toolbar": {
+      "btn": {
+        "copy_query": {
+          "tooltip": "Copy query (Shift-Ctrl-C)"
+        },
+        "merge_fragment": {
+          "tooltip": "Merge fragments into query (Shift-Ctrl-M)"
+        },
+        "prettify_query": {
+          "tooltip": "Prettify query (Shift-Ctrl-P)"
+        },
+        "execute_query": {
+          "tooltip": "Execute query (Ctrl-Enter)"
+        },
+        "stop_query": {
+          "tooltip": "Stop query (Ctrl-Enter)"
+        }
+      }
+    }
+  },
+  "dialog": {
+    "settings": {
+      "title": "Settings",
+      "language": {
+        "title": "Language",
+        "description": "Select your preferred language.",
+        "btn": {
+          "language_selector": {
+            "aria_label": "Current language: English (click to change)",
+            "item_aria_label": "Select English as the current language"
+          }
+        }
+      },
+      "persisted_headers": {
+        "title": "Persist headers",
+        "description": "Save headers upon reloading. <span class=\"graphiql-warning-text\">Only enable if you trust this device.</span>",
+        "btn": {
+          "on": "On",
+          "off": "Off"
+        }
+      },
+      "theme": {
+        "title": "Theme",
+        "description": "Adjust how the interface appears.",
+        "btn": {
+          "system": "System",
+          "light": "Light",
+          "dark": "Dark"
+        }
+      },
+      "clear_storage": {
+        "title": "Clear storage",
+        "description": "Remove all locally stored data and start fresh.",
+        "btn": {
+          "clear_data": "Clear data",
+          "cleared_data": "Cleared data",
+          "error": "Failed"
+        }
+      }
+    },
+    "short_keys": {
+      "title": "Short Keys",
+      "header": {
+        "short_key": "Short key",
+        "function": "Function"
+      },
+      "function": {
+        "search_in_editor": "Search in editor",
+        "search_in_documentation": "Search in documentation",
+        "execute_query": "Execute query",
+        "prettify_editors": "Prettify editors",
+        "merge_fragments_into_definition": "Merge fragments definitions into operation definition",
+        "copy_query": "Copy query",
+        "refresh_schema": "Re-fetch schema using introspection"
+      },
+      "footer": "The editors use <a href=\"https://codemirror.net/5/doc/manual.html#keymaps\" target=\"_blank\" rel=\"noopener noreferrer\" >CodeMirror Key Maps</a> that add more short keys. This instance of Graph<em>i</em>QL uses <code>{{keyMap}}</code>."
+    }
+  },
+  "component": {
+    "add_tab": {
+      "btn": {
+        "tooltip": "Add tab"
+      }
+    }
+  }
+}

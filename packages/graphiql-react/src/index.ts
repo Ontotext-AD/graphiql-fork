@@ -16,3 +16,4 @@ export type {
 export type { GraphiQLPlugin } from './stores/plugin';
 export { KEY_MAP, formatShortcutForOS, isMacOs } from './constants';
 export * from './deprecated';
+export * from './translation';

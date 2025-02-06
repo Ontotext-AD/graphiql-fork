@@ -1,0 +1,12 @@
+.language-selector-content {
+  z-index: 10;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.language-selector .graphiql-chevron-icon {
+  color: hsla(var(--color-neutral), var(--alpha-tertiary));
+  height: var(--px-12);
+  margin-left: var(--px-2);
+  width: var(--px-12);
+}
