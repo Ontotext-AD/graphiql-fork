@@ -108,6 +108,7 @@ export function explorerPlugin(
   props?: GraphiQLExplorerPluginProps,
 ): GraphiQLPlugin {
   return {
+    id: 'graphiql_explorer',
     title: 'GraphiQL Explorer',
     icon: FolderPlusIcon,
     content: () => <ExplorerPlugin {...props} />,

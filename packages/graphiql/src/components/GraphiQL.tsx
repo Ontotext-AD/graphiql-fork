@@ -556,7 +556,9 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
           <div className="graphiql-sidebar-section">
             {pluginContext?.plugins.map((plugin, index) => {
               const isVisible = plugin === pluginContext.visiblePlugin;
-              const label = `${isVisible ? 'Hide' : 'Show'} ${plugin.title}`;
+              const pluginTitle = translationService.translate(`plugin.${plugin.id}.title`, currentLanguage);
+              const labelKey = 'plugin.btn.' + (isVisible ? 'hide_plugin' : 'show_plugin');
+              const label = translationService.translate(labelKey, currentLanguage, {pluginTitle});
               return (
                 <Tooltip key={plugin.title} label={label}>
                   <UnStyledButton

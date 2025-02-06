@@ -109,5 +109,23 @@
         "tooltip": "Ajouter un onglet"
       }
     }
+  },
+  "plugin": {
+    "history": {
+      "title": "Historique"
+    },
+    "documentation_explorer": {
+      "title": "Explorateur de documentation"
+    },
+    "graphiql_explorer": {
+      "title": "Explorateur GraphiQL"
+    },
+    "graphiql-plugin-code-exporter": {
+      "title": "Exportateur de Code GraphiQL"
+    },
+    "btn": {
+      "show_plugin": "Afficher {{pluginTitle}}",
+      "hide_plugin": "Masquer {{pluginTitle}}"
+    }
   }
 }
