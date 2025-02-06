@@ -24,6 +24,7 @@ export function codeExporterPlugin(
   props: GraphiQLCodeExporterPluginProps,
 ): GraphiQLPlugin {
   return {
+    id: 'graphiql-plugin-code-exporter',
     title: 'GraphiQL Code Exporter',
     icon: () => (
       <svg
