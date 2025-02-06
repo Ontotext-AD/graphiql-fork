@@ -27,9 +27,15 @@ export type GraphiQLPlugin = {
    * title the provider component will throw an error.
    */
   title: string;
+  
+  /**
+   * The unique identifier of the plugin.
+   */
+  id: string;
 };
 
 export const DOC_EXPLORER_PLUGIN: GraphiQLPlugin = {
+  id: 'documentation_explorer',
   title: 'Documentation Explorer',
   icon: function Icon() {
     const pluginContext = usePluginContext();
@@ -42,6 +48,7 @@ export const DOC_EXPLORER_PLUGIN: GraphiQLPlugin = {
   content: DocExplorer,
 };
 export const HISTORY_PLUGIN: GraphiQLPlugin = {
+  id: 'history',
   title: 'History',
   icon: HistoryIcon,
   content: History,

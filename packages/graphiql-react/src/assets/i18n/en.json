@@ -109,5 +109,23 @@
         "tooltip": "Add tab"
       }
     }
+  },
+  "plugin": {
+    "history": {
+      "title": "History"
+    },
+    "documentation_explorer": {
+      "title": "Documentation Explorer"
+    },
+    "graphiql_explorer": {
+      "title": "GraphiQL Explorer"
+    },
+    "graphiql-plugin-code-exporter": {
+      "title": "GraphiQL Code Exporter"
+    },
+    "btn": {
+      "show_plugin": "Show {{pluginTitle}}",
+      "hide_plugin": "Hide {{pluginTitle}}"
+    }
   }
 }
