@@ -8,6 +8,7 @@ import { DeprecationReason } from './deprecation-reason';
 import { Directive } from './directive';
 import { ExplorerSection } from './section';
 import { TypeLink } from './type-link';
+import {TranslateText} from '../../translation';
 
 type FieldDocumentationProps = {
   /**
@@ -74,7 +75,7 @@ function Arguments({ field }: { field: ExplorerFieldDef }) {
           </ExplorerSection>
         ) : (
           <Button type="button" onClick={handleShowDeprecated}>
-            Show Deprecated Arguments
+            <TranslateText translationKey="plugin.documentation_explorer.btn.show_deprecated_arguments"/>
           </Button>
         )
       ) : null}

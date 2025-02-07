@@ -14,6 +14,7 @@ import {
 } from '../../icons';
 
 import './section.css';
+import {TranslateText} from '../../translation';
 
 type ExplorerSectionProps = {
   children: ReactNode;
@@ -43,7 +44,7 @@ export function ExplorerSection(props: ExplorerSectionProps) {
     <div>
       <div className="graphiql-doc-explorer-section-title">
         <Icon />
-        {props.title}
+        <TranslateText translationKey={`plugin.documentation_explorer.section.${normalizeJsonKey(props.title)}.title`}/>
       </div>
       <div className="graphiql-doc-explorer-section-content">
         {props.children}
@@ -66,4 +67,21 @@ const TYPE_TO_ICON: Record<ExplorerSectionProps['title'], ComponentType> = {
   'Root Types': RootTypeIcon,
   Type: TypeIcon,
   'All Schema Types': TypeIcon,
+};
+
+/**
+ * Converts a given string into a normalized JSON key by replacing spaces with underscores and converting it to lowercase.
+ *
+ * @param key - The input string to normalize.
+ * @returns A normalized string suitable for use as a JSON key.
+ *
+ * @example
+ * ```typescript
+ * normalizeJsonKey("Root Types"); // "root_types"
+ * normalizeJsonKey("Enum Values"); // "enum_values"
+ * normalizeJsonKey("  Deprecated Fields  "); // "deprecated_fields"
+ * ```
+ */
+const normalizeJsonKey = (key = ''): string => {
+  return key.trim().replaceAll(' ', '_').toLowerCase();
 };

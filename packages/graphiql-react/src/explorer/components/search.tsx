@@ -25,6 +25,7 @@ import { useExplorerContext } from '../context';
 import './search.css';
 import { renderType } from './utils';
 import { isMacOs } from '../../utility/is-macos';
+import {TranslateText} from '../../translation';
 
 export function Search() {
   const { explorerNavStack, push } = useExplorerContext({
@@ -119,7 +120,7 @@ export function Search() {
             results.fields.length ===
           0 ? (
             <li className="graphiql-doc-explorer-search-empty">
-              No results found
+              <TranslateText translationKey='plugin.documentation_explorer.search.no_result_found'/>
             </li>
           ) : (
             results.within.map((result, i) => (
@@ -135,7 +136,7 @@ export function Search() {
           {results.within.length > 0 &&
           results.types.length + results.fields.length > 0 ? (
             <div className="graphiql-doc-explorer-search-divider">
-              Other results
+              <TranslateText translationKey='plugin.documentation_explorer.search.other_results'/>
             </div>
           ) : null}
           {results.types.map((result, i) => (
