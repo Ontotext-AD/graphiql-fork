@@ -11,6 +11,7 @@ import { Search } from './search';
 import { TypeDocumentation } from './type-documentation';
 
 import './doc-explorer.css';
+import {TranslateText} from '../../translation';
 
 export function DocExplorer() {
   const { fetchError, isFetching, schema, validationErrors } = useSchemaContext(
@@ -26,12 +27,15 @@ export function DocExplorer() {
   let content: ReactNode = null;
   if (fetchError) {
     content = (
-      <div className="graphiql-doc-explorer-error">Error fetching schema</div>
+      <div className="graphiql-doc-explorer-error">
+        <TranslateText translationKey="plugin.documentation_explorer.error.fetching_schema"/>
+      </div>
     );
   } else if (validationErrors.length > 0) {
     content = (
       <div className="graphiql-doc-explorer-error">
-        Schema is invalid: {validationErrors[0].message}
+        <TranslateText translationKey="plugin.documentation_explorer.error.invalid_schema"
+                       translationParams={{errorMessage: validationErrors[0].message}}/>
       </div>
     );
   } else if (isFetching) {
@@ -42,7 +46,7 @@ export function DocExplorer() {
     // an error during introspection.
     content = (
       <div className="graphiql-doc-explorer-error">
-        No GraphQL schema available
+        <TranslateText translationKey="plugin.documentation_explorer.error.schema_not_available"/>
       </div>
     );
   } else if (explorerNavStack.length === 1) {

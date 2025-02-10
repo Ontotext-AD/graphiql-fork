@@ -21,6 +21,7 @@ import { ExplorerSection } from './section';
 import { TypeLink } from './type-link';
 
 import './type-documentation.css';
+import {TranslateText} from '../../translation';
 
 type TypeDocumentationProps = {
   /**
@@ -106,7 +107,7 @@ function Fields({ type }: { type: GraphQLNamedType }) {
           </ExplorerSection>
         ) : (
           <Button type="button" onClick={handleShowDeprecated}>
-            Show Deprecated Fields
+            <TranslateText translationKey='plugin.documentation_explorer.btn.show_deprecated_fields'/>
           </Button>
         )
       ) : null}
