@@ -115,7 +115,73 @@
       "title": "Historique"
     },
     "documentation_explorer": {
-      "title": "Explorateur de documentation"
+      "title": "Explorateur de documentation",
+      "section": {
+        "root_types": {
+          "title": "Types Racines"
+        },
+        "fields": {
+          "title": "Champs"
+        },
+        "deprecated_fields": {
+          "title": "Champs Obsolètes"
+        },
+        "type": {
+          "title": "Type"
+        },
+        "arguments": {
+          "title": "Arguments"
+        },
+        "deprecated_arguments": {
+          "title": "Arguments Obsolètes"
+        },
+        "implements": {
+          "title": "Implémente"
+        },
+        "implementations": {
+          "title": "Implémentations"
+        },
+        "possible_types": {
+          "title": "Types Possibles"
+        },
+        "enum_values": {
+          "title": "Valeurs Enum"
+        },
+        "deprecated_enum_values": {
+          "title": "Valeurs Enum Obsolètes"
+        },
+        "directives": {
+          "title": "Directives"
+        },
+        "all_schema_types": {
+          "title": "Tous les Types de Schéma"
+        }
+      },
+      "root_type": {
+        "default_description": "Un schéma GraphQL fournit un type racine pour chaque type d'opération.",
+        "query": "requête",
+        "mutation": "mutation",
+        "subscription": "abonnement"
+      },
+      "argument": {
+        "deprecated": "Obsolète"
+      },
+      "deprecation_reason": {
+        "deprecated": "Obsolète"
+      },
+      "search": {
+        "no_result_found": "Aucun résultat trouvé",
+        "other_results": "Autres résultats"
+      },
+      "btn": {
+        "show_deprecated_arguments": "Afficher les arguments obsolètes",
+        "show_deprecated_fields": "Afficher les champs obsolètes"
+      },
+      "error": {
+        "fetching_schema": "Erreur lors de la récupération du schéma",
+        "invalid_schema": "Le schéma est invalide : {{errorMessage}}",
+        "schema_not_available": "Aucun schéma GraphQL disponible"
+      }
     },
     "graphiql_explorer": {
       "title": "Explorateur GraphiQL"

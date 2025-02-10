@@ -115,7 +115,73 @@
       "title": "History"
     },
     "documentation_explorer": {
-      "title": "Documentation Explorer"
+      "title": "Documentation Explorer",
+      "section": {
+        "root_types": {
+          "title": "Root Types"
+        },
+        "fields": {
+          "title": "Fields"
+        },
+        "deprecated_fields": {
+          "title": "Deprecated Fields"
+        },
+        "type": {
+          "title": "Type"
+        },
+        "arguments": {
+          "title": "Arguments"
+        },
+        "deprecated_arguments": {
+          "title": "Deprecated Arguments"
+        },
+        "implements": {
+          "title": "Implements"
+        },
+        "implementations": {
+          "title": "Implementations"
+        },
+        "possible_types": {
+          "title": "Possible Types"
+        },
+        "enum_values": {
+          "title": "Enum Values"
+        },
+        "deprecated_enum_values": {
+          "title": "Deprecated Enum Values"
+        },
+        "directives": {
+          "title": "Directives"
+        },
+        "all_schema_types": {
+          "title": "All Schema Types"
+        }
+      },
+      "root_type": {
+        "default_description": "A GraphQL schema provides a root type for each kind of operation.",
+        "query": "query",
+        "mutation": "mutation",
+        "subscription": "subscription"
+      },
+      "argument": {
+        "deprecated": "Deprecated"
+      },
+      "deprecation_reason": {
+        "deprecated": "Deprecated"
+      },
+      "search": {
+        "no_result_found": "No results found",
+        "other_results": "Other results"
+      },
+      "btn": {
+        "show_deprecated_arguments": "Show Deprecated Arguments",
+        "show_deprecated_fields": "Show Deprecated Fields"
+      },
+      "error": {
+        "fetching_schema": "Error fetching schema",
+        "invalid_schema": "Schema is invalid: {{errorMessage}}",
+        "schema_not_available": "No GraphQL schema available"
+      }
     },
     "graphiql_explorer": {
       "title": "GraphiQL Explorer"

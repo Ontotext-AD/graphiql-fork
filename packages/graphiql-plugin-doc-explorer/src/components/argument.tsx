@@ -4,6 +4,7 @@ import { MarkdownContent } from '@graphiql/react';
 import { DefaultValue } from './default-value';
 import { TypeLink } from './type-link';
 import './argument.css';
+import {TranslateText} from '../../translation';
 
 type ArgumentProps = {
   /**
@@ -49,7 +50,7 @@ export const Argument: FC<ArgumentProps> = ({
       {arg.deprecationReason ? (
         <div className="graphiql-doc-explorer-argument-deprecation">
           <div className="graphiql-doc-explorer-argument-deprecation-label">
-            Deprecated
+            <TranslateText translationKey="plugin.documentation_explorer.argument.deprecated"/>
           </div>
           <MarkdownContent type="deprecation">
             {arg.deprecationReason}

@@ -4,6 +4,7 @@ import { MarkdownContent } from '@graphiql/react';
 import { ExplorerSection } from './section';
 import { TypeLink } from './type-link';
 import './schema-documentation.css';
+import {TranslateText} from '../../translation';
 
 type SchemaDocumentationProps = {
   /**
@@ -27,21 +28,28 @@ export const SchemaDocumentation: FC<SchemaDocumentationProps> = ({
 
   return (
     <>
-      <MarkdownContent type="description">
-        {schema.description ||
-          'A GraphQL schema provides a root type for each kind of operation.'}
-      </MarkdownContent>
+      {schema.description ?
+        <MarkdownContent type="description">{schema.description}</MarkdownContent>
+        :
+        <div>
+          <TranslateText translationKey="plugin.documentation_explorer.root_type.default_description"/>
+        </div>
+      }
       <ExplorerSection title="Root Types">
         {queryType ? (
           <div>
-            <span className="graphiql-doc-explorer-root-type">query</span>
+            <span className="graphiql-doc-explorer-root-type">
+              <TranslateText translationKey="plugin.documentation_explorer.root_type.query"/>
+            </span>
             {': '}
             <TypeLink type={queryType} />
           </div>
         ) : null}
         {mutationType && (
           <div>
-            <span className="graphiql-doc-explorer-root-type">mutation</span>
+            <span className="graphiql-doc-explorer-root-type">
+              <TranslateText translationKey="plugin.documentation_explorer.root_type.mutation"/>
+            </span>
             {': '}
             <TypeLink type={mutationType} />
           </div>
@@ -49,7 +57,7 @@ export const SchemaDocumentation: FC<SchemaDocumentationProps> = ({
         {subscriptionType && (
           <div>
             <span className="graphiql-doc-explorer-root-type">
-              subscription
+              <TranslateText translationKey="plugin.documentation_explorer.root_type.subscription"/>
             </span>
             {': '}
             <TypeLink type={subscriptionType} />
