@@ -1,7 +1,7 @@
 import type { QueryStoreItem } from '@graphiql/toolkit';
 import {
   MouseEventHandler,
-  useCallback,
+  useCallback, useContext,
   useEffect,
   useRef,
   useState,
@@ -20,6 +20,7 @@ import { Button, Tooltip, UnStyledButton } from '../ui';
 import { useHistoryContext } from './context';
 
 import './style.css';
+import {TranslateText, TranslationContext} from '../translation';
 
 export function History() {
   const { items: all, deleteFromHistory } = useHistoryContext({
@@ -59,11 +60,13 @@ export function History() {
       setClearStatus('error');
     }
   }, [deleteFromHistory, items]);
+  
+  const { currentLanguage, translationService } = useContext(TranslationContext);
 
   return (
-    <section aria-label="History" className="graphiql-history">
+    <section aria-label={translationService.translate('plugin.history.title', currentLanguage)} className="graphiql-history">
       <div className="graphiql-history-header">
-        History
+        <TranslateText translationKey='plugin.history.title'/>
         {(clearStatus || items.length > 0) && (
           <Button
             type="button"
@@ -72,9 +75,9 @@ export function History() {
             onClick={handleClearStatus}
           >
             {{
-              success: 'Cleared',
-              error: 'Failed to Clear',
-            }[clearStatus!] || 'Clear'}
+              success: translationService.translate('plugin.history.btn.clear.status.cleared', currentLanguage),
+              error: translationService.translate('plugin.history.btn.clear.status.failed_to_clear', currentLanguage),
+            }[clearStatus!] || <TranslateText translationKey='plugin.history.btn.clear.label'/>}
           </Button>
         )}
       </div>
@@ -175,7 +178,14 @@ export function HistoryItem(props: QueryHistoryItemProps) {
       },
       [props.item, toggleFavorite],
     );
-
+  
+  const { currentLanguage, translationService } = useContext(TranslationContext);
+  
+  const pluginTitle = translationService.translate('plugin.history.name.tooltip', currentLanguage);
+  const btnEditLabel = translationService.translate('plugin.history.btn.edit_label.tooltip', currentLanguage);
+  const btnFavoriteTooltip = translationService.translate(props.item.favorite ? 'plugin.history.btn.remove_favorite.tooltip' : 'plugin.history.btn.add_favorite.tooltip', currentLanguage);
+  const btnDeleteFromTooltip = translationService.translate('plugin.history.btn.delete_from_history.tooltip', currentLanguage);
+  
   return (
     <li className={clsx('graphiql-history-item', isEditable && 'editable')}>
       {isEditable ? (
@@ -192,10 +202,10 @@ export function HistoryItem(props: QueryHistoryItemProps) {
                 editLabel({ ...props.item, label: e.currentTarget.value });
               }
             }}
-            placeholder="Type a label"
+            placeholder={translationService.translate('plugin.history.name.placeholder', currentLanguage)}
           />
           <UnStyledButton type="button" ref={buttonRef} onClick={handleSave}>
-            Save
+            <TranslateText translationKey='plugin.history.btn.save'/>
           </UnStyledButton>
           <UnStyledButton type="button" ref={buttonRef} onClick={handleClose}>
             <CloseIcon />
@@ -203,36 +213,34 @@ export function HistoryItem(props: QueryHistoryItemProps) {
         </>
       ) : (
         <>
-          <Tooltip label="Set active">
+          <Tooltip label={pluginTitle}>
             <UnStyledButton
               type="button"
               className="graphiql-history-item-label"
               onClick={handleHistoryItemClick}
-              aria-label="Set active"
+              aria-label={pluginTitle}
             >
               {displayName}
             </UnStyledButton>
           </Tooltip>
-          <Tooltip label="Edit label">
+          <Tooltip label={btnEditLabel}>
             <UnStyledButton
               type="button"
               className="graphiql-history-item-action"
               onClick={handleEditLabel}
-              aria-label="Edit label"
+              aria-label={btnEditLabel}
             >
               <PenIcon aria-hidden="true" />
             </UnStyledButton>
           </Tooltip>
           <Tooltip
-            label={props.item.favorite ? 'Remove favorite' : 'Add favorite'}
+            label={btnFavoriteTooltip}
           >
             <UnStyledButton
               type="button"
               className="graphiql-history-item-action"
               onClick={handleToggleFavorite}
-              aria-label={
-                props.item.favorite ? 'Remove favorite' : 'Add favorite'
-              }
+              aria-label={btnFavoriteTooltip}
             >
               {props.item.favorite ? (
                 <StarFilledIcon aria-hidden="true" />
@@ -241,12 +249,12 @@ export function HistoryItem(props: QueryHistoryItemProps) {
               )}
             </UnStyledButton>
           </Tooltip>
-          <Tooltip label="Delete from history">
+          <Tooltip label={btnDeleteFromTooltip}>
             <UnStyledButton
               type="button"
               className="graphiql-history-item-action"
               onClick={handleDeleteItemFromHistory}
-              aria-label="Delete from history"
+              aria-label={btnDeleteFromTooltip}
             >
               <TrashIcon aria-hidden="true" />
             </UnStyledButton>

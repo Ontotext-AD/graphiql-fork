@@ -486,7 +486,7 @@ export function GraphiQLInterface(props: GraphiQLInterfaceProps) {
   }, []);
 
   const addTabLabel = translationService.translate(
-    'component.add_tab.btn.tooltip',
+    'graphiql.tab.btn.add_tab.tooltip',
     currentLanguage,
   );
   const addTab = (
