@@ -1,9 +1,10 @@
-import { ComponentPropsWithoutRef, forwardRef, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, forwardRef, ReactNode, useContext } from 'react';
 import { cn } from '../../utility';
 import { Reorder } from 'framer-motion';
 import { CloseIcon } from '../../icons';
 import { UnStyledButton } from '../button';
 import './index.css';
+import {TranslationContext} from '../translation';
 
 interface TabProps extends ComponentPropsWithoutRef<typeof Reorder.Item> {
   isActive?: boolean;
@@ -48,17 +49,22 @@ TabButton.displayName = 'Tab.Button';
 const TabClose = forwardRef<
   HTMLButtonElement,
   ComponentPropsWithoutRef<'button'>
->((props, ref) => (
-  <UnStyledButton
-    aria-label="Close Tab"
-    {...props}
-    ref={ref}
-    type="button"
-    className={cn('graphiql-tab-close', props.className)}
-  >
-    <CloseIcon />
-  </UnStyledButton>
-));
+>((props, ref) => {
+    const { currentLanguage, translationService } = useContext(TranslationContext);
+    const btnCloseTabeTooltip = translationService.translate('graphiql.tab.btn.close_tab.tooltip', currentLanguage);
+
+    return (
+      <UnStyledButton
+        aria-label={btnCloseTabeTooltip}
+        {...props}
+        ref={ref}
+        type="button"
+        className={cn('graphiql-tab-close', props.className)}
+      >
+        <CloseIcon />
+      </UnStyledButton>
+  )},
+);
 TabClose.displayName = 'Tab.Close';
 
 export const Tab = Object.assign(TabRoot, {
