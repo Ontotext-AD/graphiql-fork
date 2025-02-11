@@ -45,7 +45,6 @@
       }
     },
     "tab": {
-      "default_title": "<untitled>",
       "btn": {
         "close_tab": {
           "tooltip": "Close tab"
