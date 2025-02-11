@@ -146,6 +146,7 @@ export function GraphiQL({
   }
 
   return (
+    <TranslationProvider {...props}>
     <GraphiQLProvider
       getDefaultFieldNames={getDefaultFieldNames}
       dangerouslyAssumeSchemaIsValid={dangerouslyAssumeSchemaIsValid}
@@ -174,7 +175,7 @@ export function GraphiQL({
       validationRules={validationRules}
       variables={variables}
     >
-      <TranslationProvider {...props}>
+        
         <GraphiQLInterface
           confirmCloseTab={confirmCloseTab}
           showPersistHeadersSettings={shouldPersistHeaders !== false}
@@ -182,8 +183,8 @@ export function GraphiQL({
           forcedTheme={props.forcedTheme}
           {...props}
         />
-      </TranslationProvider>
     </GraphiQLProvider>
+    </TranslationProvider>
   );
 }
 
