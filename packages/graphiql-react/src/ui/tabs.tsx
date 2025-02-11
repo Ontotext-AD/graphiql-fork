@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import {forwardRef, ReactNode, useContext} from 'react';
 import { clsx } from 'clsx';
 import { Reorder } from 'framer-motion';
 import { CloseIcon } from '../icons';
@@ -7,6 +7,7 @@ import { UnStyledButton } from './button';
 import { Tooltip } from './tooltip';
 
 import './tabs.css';
+import {TranslationContext} from '../translation';
 
 type TabProps = {
   isActive?: boolean;
@@ -51,10 +52,15 @@ const TabButton = forwardRef<
 TabButton.displayName = 'Tab.Button';
 
 const TabClose = forwardRef<HTMLButtonElement, JSX.IntrinsicElements['button']>(
-  (props, ref) => (
-    <Tooltip label="Close Tab">
+  (props, ref) => {
+    
+    const { currentLanguage, translationService } = useContext(TranslationContext);
+    const btnCloseTabeTooltip = translationService.translate('graphiql.tab.btn.close_tab.tooltip', currentLanguage);
+    
+    return (
+    <Tooltip label={btnCloseTabeTooltip}>
       <UnStyledButton
-        aria-label="Close Tab"
+        aria-label={btnCloseTabeTooltip}
         {...props}
         ref={ref}
         type="button"
@@ -63,7 +69,7 @@ const TabClose = forwardRef<HTMLButtonElement, JSX.IntrinsicElements['button']>(
         <CloseIcon />
       </UnStyledButton>
     </Tooltip>
-  ),
+  )},
 );
 TabClose.displayName = 'Tab.Close';
 

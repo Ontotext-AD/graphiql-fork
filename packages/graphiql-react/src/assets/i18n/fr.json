@@ -43,6 +43,16 @@
           "tooltip": "Arrêter la requête (Ctrl-Entrée)"
         }
       }
+    },
+    "tab": {
+      "btn": {
+        "close_tab": {
+          "tooltip": "Fermer l'onglet"
+        },
+        "add_tab": {
+          "tooltip": "Ajouter un onglet"
+        }
+      }
     }
   },
   "dialog": {
@@ -103,16 +113,35 @@
       "footer": "Les éditeurs utilisent les <a href=\"https://codemirror.net/5/doc/manual.html#keymaps\" target=\"_blank\" rel=\"noopener noreferrer\">mappages de touches de CodeMirror</a>, qui ajoutent davantage de raccourcis clavier. Cette instance de Graph<em>i</em>QL utilise <code>{{keyMap}}</code>."
     }
   },
-  "component": {
-    "add_tab": {
-      "btn": {
-        "tooltip": "Ajouter un onglet"
-      }
-    }
-  },
   "plugin": {
     "history": {
-      "title": "Historique"
+      "title": "Historique",
+      "name": {
+        "placeholder": "Saisissez une étiquette",
+        "tooltip": "Définir comme actif"
+      },
+      "btn": {
+        "save": "Enregistrer",
+        "edit_label": {
+          "tooltip": "Modifier l'étiquette"
+        },
+        "add_favorite": {
+          "tooltip": "Ajouter aux favoris"
+        },
+        "remove_favorite": {
+          "tooltip": "Retirer des favoris"
+        },
+        "delete_from_history": {
+          "tooltip": "Supprimer de l'historique"
+        },
+        "clear": {
+          "label": "Effacer",
+          "status": {
+            "cleared": "Effacé",
+            "failed_to_clear": "Échec de l'effacement"
+          }
+        }
+      }
     },
     "documentation_explorer": {
       "title": "Explorateur de documentation",
