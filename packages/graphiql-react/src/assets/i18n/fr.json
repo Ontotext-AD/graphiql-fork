@@ -45,6 +45,7 @@
       }
     },
     "tab": {
+      "default_title": "<sans titre>",
       "btn": {
         "close_tab": {
           "tooltip": "Fermer l'onglet"
