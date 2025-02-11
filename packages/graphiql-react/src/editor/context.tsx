@@ -10,7 +10,6 @@ import { VariableToType } from 'graphql-language-service';
 import {
   ReactNode,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -38,7 +37,6 @@ import {
 } from './tabs';
 import { CodeMirrorEditor } from './types';
 import { STORAGE_KEY as STORAGE_KEY_VARIABLES } from './variable-editor';
-import {TranslationContext} from '../translation';
 
 export type CodeMirrorEditorWithOperationFacts = CodeMirrorEditor & {
   documentAST: DocumentNode | null;
@@ -296,8 +294,6 @@ export function EditorContextProvider(props: EditorContextProviderProps) {
     shouldPersistHeaders,
   });
 
-  const { currentLanguage, translationService } = useContext(TranslationContext);
-
   // We store this in state but never update it. By passing a function we only
   // need to compute it lazily during the initial render.
   const [initialState] = useState(() => {
@@ -383,7 +379,6 @@ export function EditorContextProvider(props: EditorContextProviderProps) {
           createTab({
             headers: defaultHeaders,
             query: defaultQuery ?? DEFAULT_QUERY,
-            defaultTabTitle: translationService.translate('graphiql.tab.default_title', currentLanguage),
           }),
         ],
         activeTabIndex: updatedValues.tabs.length,
@@ -400,7 +395,6 @@ export function EditorContextProvider(props: EditorContextProviderProps) {
     setEditorValues,
     storeTabs,
     synchronizeActiveTabValues,
-    currentLanguage
   ]);
 
   const changeTab = useCallback<EditorContextType['changeTab']>(
