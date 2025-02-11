@@ -18,6 +18,8 @@ export type TabDefinition = {
    * The contents of the headers editor of this tab.
    */
   headers?: string | null;
+  
+  defaultTabTitle?: string
 };
 
 /**
@@ -73,6 +75,7 @@ export function getDefaultTabState({
   variables,
   storage,
   shouldPersistHeaders,
+  defaultTabTitle
 }: {
   defaultQuery: string;
   defaultHeaders?: string;
@@ -82,6 +85,7 @@ export function getDefaultTabState({
   variables: string | null;
   storage: StorageAPI | null;
   shouldPersistHeaders?: boolean;
+  defaultTabTitle?: string;
 }) {
   const storedState = storage?.get(STORAGE_KEY);
   try {
@@ -119,7 +123,7 @@ export function getDefaultTabState({
         parsed.tabs.push({
           id: guid(),
           hash: expectedHash,
-          title: operationName || DEFAULT_TITLE,
+          title: operationName || defaultTabTitle || DEFAULT_TITLE,
           query,
           variables,
           headers,
@@ -291,11 +295,12 @@ export function createTab({
   query = null,
   variables = null,
   headers = null,
+  defaultTabTitle = undefined
 }: Partial<TabDefinition> = {}): TabState {
   return {
     id: guid(),
     hash: hashFromTabContents({ query, variables, headers }),
-    title: (query && fuzzyExtractOperationName(query)) || DEFAULT_TITLE,
+    title: (query && fuzzyExtractOperationName(query)) || defaultTabTitle || DEFAULT_TITLE,
     query,
     variables,
     headers,
@@ -323,6 +328,7 @@ export function setPropertiesInActiveTab(
           (newTab.query
             ? fuzzyExtractOperationName(newTab.query)
             : undefined) ||
+          newTab.title ||
           DEFAULT_TITLE,
       };
     }),
