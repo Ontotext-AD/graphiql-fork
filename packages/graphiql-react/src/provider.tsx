@@ -11,6 +11,7 @@ import { HistoryContextProvider, HistoryContextProviderProps } from './history';
 import { PluginContextProvider, PluginContextProviderProps } from './plugin';
 import { SchemaContextProvider, SchemaContextProviderProps } from './schema';
 import { StorageContextProvider, StorageContextProviderProps } from './storage';
+import {TranslationContextProviderProps} from './translation/models/translation-context-provider-props';
 
 export type GraphiQLProviderProps = EditorContextProviderProps &
   ExecutionContextProviderProps &
@@ -18,7 +19,8 @@ export type GraphiQLProviderProps = EditorContextProviderProps &
   HistoryContextProviderProps &
   PluginContextProviderProps &
   SchemaContextProviderProps &
-  StorageContextProviderProps;
+  StorageContextProviderProps &
+  TranslationContextProviderProps;
 
 export function GraphiQLProvider({
   children,
