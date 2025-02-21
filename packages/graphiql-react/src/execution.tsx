@@ -21,6 +21,7 @@ import { useAutoCompleteLeafs, useEditorContext } from './editor';
 import { UseAutoCompleteLeafsArgs } from './editor/hooks';
 import { useHistoryContext } from './history';
 import { createContextHook, createNullableContext } from './utility/context';
+import {ABORT_QUERY} from '@graphiql/toolkit/src';
 
 export type ExecutionContextType = {
   /**
@@ -220,6 +221,8 @@ export function ExecutionContextProvider({
         }
       };
 
+      const abortController = new AbortController();
+      
       const fetch = fetcher(
         {
           query,
@@ -227,6 +230,7 @@ export function ExecutionContextProvider({
           operationName: opName,
         },
         {
+          abortController,
           headers: headers ?? undefined,
           documentAST: queryEditor.documentAST ?? undefined,
         },
@@ -257,7 +261,10 @@ export function ExecutionContextProvider({
         );
       } else if (isAsyncIterable(value)) {
         setSubscription({
-          unsubscribe: () => value[Symbol.asyncIterator]().return?.(),
+          unsubscribe: () => {
+            value[Symbol.asyncIterator]().return?.();
+            abortController.abort(ABORT_QUERY);
+          },
         });
         for await (const result of value) {
           handleResponse(result);

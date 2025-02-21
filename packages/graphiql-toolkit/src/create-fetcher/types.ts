@@ -33,6 +33,7 @@ export type FetcherParams = {
 export type FetcherOpts = {
   headers?: { [key: string]: any };
   documentAST?: DocumentNode;
+  abortController?: AbortController
 };
 
 export type ExecutionResultPayload =
@@ -99,12 +100,15 @@ export interface CreateFetcherOptions {
    */
   legacyClient?: any;
   /**
-   * Headers you can provide statically.
+   * Headers that can be provided statically or dynamically.
+   *
+   * - If provided as an object (`Record<string, string>`), these headers are set statically.
+   * - If provided as a function (`() => Record<string, string>`), the function will be called to generate the headers dynamically.
    *
    * If you enable the headers editor and the user provides
    * A header you set statically here, it will be overridden by their value.
    */
-  headers?: Record<string, string>;
+  headers?: Record<string, string> | (() => Record<string, string>);
   /**
    * Websockets connection params used when you provide subscriptionUrl. graphql-ws `ClientOptions.connectionParams`
    */
@@ -125,4 +129,11 @@ export interface CreateFetcherOptions {
    * the `url` and `headers` property should have you covered.
    */
   schemaFetcher?: Fetcher;
+  
+  /**
+   * Callback function called when a query is aborted.
+   */
+  onAbortQuery?: (response: RequestInit) => void;
 }
+
+export const ABORT_QUERY = '_abort_query_'
