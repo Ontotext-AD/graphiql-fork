@@ -18,6 +18,7 @@ import type {
   ExecutionResultPayload,
   CreateFetcherOptions,
 } from './types';
+import {ABORT_QUERY} from './types';
 
 const errorHasCode = (err: unknown): err is { code: string } => {
   return typeof err === 'object' && err !== null && 'code' in err;
@@ -61,7 +62,7 @@ export const createSimpleFetcher =
       body: JSON.stringify(graphQLParams),
       headers: {
         'content-type': 'application/json',
-        ...options.headers,
+        ...(typeof options?.headers === 'function' ? options.headers() : options?.headers),
         ...fetcherOpts?.headers,
       },
     });
@@ -140,22 +141,36 @@ export const createMultipartFetcher = (
   httpFetch: typeof fetch,
 ): Fetcher =>
   async function* (graphQLParams: FetcherParams, fetcherOpts?: FetcherOpts) {
-    const response = await httpFetch(options.url, {
+    const request: RequestInit = {
       method: 'POST',
       body: JSON.stringify(graphQLParams),
+      signal: fetcherOpts?.abortController?.signal,
       headers: {
         'content-type': 'application/json',
         accept: 'application/json, multipart/mixed',
-        ...options.headers,
+        ...(typeof options?.headers === 'function' ? options.headers() : options?.headers),
         // allow user-defined headers to override
         // the static provided headers
         ...fetcherOpts?.headers,
       },
-    }).then(r =>
+    };
+    const response = await httpFetch(options.url, request).then(r =>
       meros<Extract<ExecutionResultPayload, { hasNext: boolean }>>(r, {
         multiple: true,
       }),
-    );
+    ).catch((error) => {
+      if (error === ABORT_QUERY) {
+        if (options.onAbortQuery) {
+          options.onAbortQuery(request);
+        }
+      } else {
+        throw error;
+      }
+    });
+    
+    if (!response) {
+      return '';
+    }
 
     // Follows the same as createSimpleFetcher above, in that we simply return it as json.
     if (!isAsyncIterable(response)) {
