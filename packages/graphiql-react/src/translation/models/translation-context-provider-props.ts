@@ -1,6 +1,6 @@
-import {Translations} from './translations';
+import type { Translations } from './translations';
 
-export type TranslationContextProviderProps = {
+export interface TranslationContextProviderProps {
   /**
    * Determined the language that has to be used.
    */

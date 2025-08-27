@@ -2,7 +2,7 @@
   "graphiql": {
     "sidebar": {
       "btn": {
-        "refresh_graphql_schema": "Recharger le schéma GraphQL",
+        "refresh_graphql_schema": "Recharger le schéma GraphQL ({{key}})",
         "open_short_keys_dialog": "Ouvrir la boîte de dialogue des raccourcis clavier",
         "open_settings_dialog": "Ouvrir la boîte de dialogue des paramètres"
       }
@@ -28,19 +28,19 @@
     "toolbar": {
       "btn": {
         "copy_query": {
-          "tooltip": "Copier la requête (Shift-Ctrl-C)"
+          "tooltip": "Copier la requête ({{key}})"
         },
         "merge_fragment": {
-          "tooltip": "Fusionner les fragments dans la requête (Shift-Ctrl-M)"
+          "tooltip": "Fusionner les fragments dans la requête ({{key}})"
         },
         "prettify_query": {
-          "tooltip": "Embellir la requête (Shift-Ctrl-P)"
+          "tooltip": "Embellir la requête ({{key}})"
         },
         "execute_query": {
-          "tooltip": "Exécuter la requête (Ctrl-Entrée)"
+          "tooltip": "Exécuter la requête ({{key}})"
         },
         "stop_query": {
-          "tooltip": "Arrêter la requête (Ctrl-Entrée)"
+          "tooltip": "Arrêter la requête ({{key}})"
         }
       }
     },
@@ -109,9 +109,10 @@
         "prettify_editors": "Embellir les éditeurs",
         "merge_fragments_into_definition": "Fusionner les fragments dans la définition de l'opération",
         "copy_query": "Copier la requête",
-        "refresh_schema": "Rafraîchir le schéma avec l'introspection"
+        "refresh_schema": "Rafraîchir le schéma avec l'introspection",
+        "open_command_palette": "Ouvrez la palette de commandes (vous devez avoir le focus dans l'éditeur)"
       },
-      "footer": "Les éditeurs utilisent les <a href=\"https://codemirror.net/5/doc/manual.html#keymaps\" target=\"_blank\" rel=\"noopener noreferrer\">mappages de touches de CodeMirror</a>, qui ajoutent davantage de raccourcis clavier. Cette instance de Graph<em>i</em>QL utilise <code>{{keyMap}}</code>."
+      "footer": "Cet éditeur Graph<em>i</em>QL utilise les <a href=\"https://code.visualstudio.com/docs/reference/default-keybindings\" target=\"_blank\" rel=\"noreferrer\">raccourcis de l’éditeur Monaco</a>, avec des combinaisons de touches similaires à VS Code. Consultez la liste complète des raccourcis pour <a href=\"https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf\" target=\"_blank\" rel=\"noreferrer\">macOS</a> ou <a href=\"https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf\" target=\"_blank\" rel=\"noreferrer\">Windows</a>."
     }
   },
   "plugin": {

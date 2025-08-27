@@ -20,6 +20,7 @@ import {
   MagnifyingGlassIcon,
   debounce,
   KEY_MAP,
+  TranslateText
 } from '@graphiql/react';
 import { useDocExplorer, useDocExplorerActions } from '../context';
 import { renderType } from './utils';
@@ -100,7 +101,7 @@ export const Search: FC = () => {
             results.fields.length ===
           0 ? (
             <div className="graphiql-doc-explorer-search-empty">
-              No results found
+              <TranslateText translationKey='plugin.documentation_explorer.search.no_result_found'/>
             </div>
           ) : (
             results.within.map((result, i) => (
@@ -116,7 +117,7 @@ export const Search: FC = () => {
           {results.within.length > 0 &&
           results.types.length + results.fields.length > 0 ? (
             <div className="graphiql-doc-explorer-search-divider">
-              Other results
+              <TranslateText translationKey='plugin.documentation_explorer.search.other_results'/>
             </div>
           ) : null}
           {results.types.map((result, i) => (

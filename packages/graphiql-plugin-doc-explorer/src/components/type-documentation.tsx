@@ -9,7 +9,7 @@ import {
   isNamedType,
   isObjectType,
 } from 'graphql';
-import { useGraphiQL, Button, MarkdownContent } from '@graphiql/react';
+import { useGraphiQL, Button, MarkdownContent, TranslateText } from '@graphiql/react';
 import type { DocExplorerFieldDef } from '../context';
 import { Argument } from './argument';
 import { DefaultValue } from './default-value';
@@ -18,7 +18,6 @@ import { FieldLink } from './field-link';
 import { ExplorerSection } from './section';
 import { TypeLink } from './type-link';
 import './type-documentation.css';
-import {TranslateText} from '../../translation';
 
 type TypeDocumentationProps = {
   /**

@@ -1,16 +1,15 @@
 import { FC, Fragment } from 'react';
-import { formatShortcutForOS, KEY_MAP } from '@graphiql/react';
+import { formatShortcutForOS, KEY_MAP, TranslateText } from '@graphiql/react';
 
 const SHORT_KEYS = Object.entries({
-  'Execute query': formatShortcutForOS(KEY_MAP.runQuery.key),
-  'Open the Command Palette (you must have focus in the editor)': 'F1',
-  'Prettify editors': KEY_MAP.prettify.key,
-  'Copy query': KEY_MAP.copyQuery.key,
-  'Re-fetch schema using introspection': KEY_MAP.refetchSchema.key,
-  'Search in documentation': formatShortcutForOS(KEY_MAP.searchInDocs.key),
-  'Search in editor': formatShortcutForOS(KEY_MAP.searchInEditor.key),
-  'Merge fragments definitions into operation definition':
-    KEY_MAP.mergeFragments.key,
+  'dialog.short_keys.function.execute_query': formatShortcutForOS(KEY_MAP.runQuery.key),
+  'dialog.short_keys.function.open_command_palette': 'F1',
+  'dialog.short_keys.function.prettify_editors': KEY_MAP.prettify.key,
+  'dialog.short_keys.function.copy_query': KEY_MAP.copyQuery.key,
+  'dialog.short_keys.function.refresh_schema': KEY_MAP.refetchSchema.key,
+  'dialog.short_keys.function.search_in_documentation': formatShortcutForOS(KEY_MAP.searchInDocs.key),
+  'dialog.short_keys.function.search_in_editor': formatShortcutForOS(KEY_MAP.searchInEditor.key),
+  'dialog.short_keys.function.merge_fragments_into_definition': KEY_MAP.mergeFragments.key,
 });
 
 export const ShortKeys: FC = () => {
@@ -19,8 +18,8 @@ export const ShortKeys: FC = () => {
       <table className="graphiql-table">
         <thead>
           <tr>
-            <th>Short Key</th>
-            <th>Function</th>
+            <th><TranslateText translationKey="dialog.short_keys.header.short_key" /></th>
+            <th><TranslateText translationKey="dialog.short_keys.header.function" /></th>
           </tr>
         </thead>
         <tbody>
@@ -34,38 +33,13 @@ export const ShortKeys: FC = () => {
                   </Fragment>
                 ))}
               </td>
-              <td>{title}</td>
+              <td><TranslateText translationKey={title} /></td>
             </tr>
           ))}
         </tbody>
       </table>
       <p>
-        This Graph<em>i</em>QL editor uses{' '}
-        <a
-          href="https://code.visualstudio.com/docs/reference/default-keybindings"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Monaco editor shortcuts
-        </a>
-        , with keybindings similar to VS Code. See the full list of shortcuts
-        for{' '}
-        <a
-          href="https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf"
-          target="_blank"
-          rel="noreferrer"
-        >
-          macOS
-        </a>{' '}
-        or{' '}
-        <a
-          href="https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Windows
-        </a>
-        .
+        <TranslateText translationKey="dialog.short_keys.footer" />
       </p>
     </div>
   );

@@ -1,4 +1,4 @@
-import type { FC, ReactElement, ReactNode } from 'react';
+import { type FC, type ReactElement, type ReactNode, useContext } from 'react';
 import {
   CopyIcon,
   KEY_MAP,
@@ -6,6 +6,7 @@ import {
   PrettifyIcon,
   ToolbarButton,
   useGraphiQLActions,
+  TranslationContext,
 } from '@graphiql/react';
 
 const DefaultToolbarRenderProps: FC<{
@@ -28,37 +29,60 @@ export const GraphiQLToolbar: FC<{
 }> = ({ children = DefaultToolbarRenderProps }) => {
   const isRenderProp = typeof children === 'function';
   const { copyQuery, prettifyEditors, mergeQuery } = useGraphiQLActions();
+  const { currentLanguage, translationService } =
+    useContext(TranslationContext);
 
   if (!isRenderProp) {
     return children as ReactElement;
   }
 
+  const prettyLabel = translationService.translate(
+    'graphiql.toolbar.btn.prettify_query.tooltip',
+    currentLanguage,
+    {key: `${KEY_MAP.prettify.key}`}
+  )
   const prettify = (
     <ToolbarButton
       onClick={prettifyEditors}
-      label={`Prettify query (${KEY_MAP.prettify.key})`}
+      label={prettyLabel}
     >
       <PrettifyIcon className="graphiql-toolbar-icon" aria-hidden="true" />
     </ToolbarButton>
   );
 
+  const mergeLabel = translationService.translate(
+    'graphiql.toolbar.btn.merge_fragment.tooltip',
+    currentLanguage,
+    {key: `${KEY_MAP.mergeFragments.key}`}
+  )
   const merge = (
     <ToolbarButton
       onClick={mergeQuery}
-      label={`Merge fragments into query (${KEY_MAP.mergeFragments.key})`}
+      label={mergeLabel}
     >
       <MergeIcon className="graphiql-toolbar-icon" aria-hidden="true" />
     </ToolbarButton>
   );
 
+  const copyLabel = translationService.translate(
+    'graphiql.toolbar.btn.copy_query.tooltip',
+    currentLanguage,
+    {key: `${KEY_MAP.copyQuery.key}`}
+  )
   const copy = (
     <ToolbarButton
       onClick={copyQuery}
-      label={`Copy query (${KEY_MAP.copyQuery.key})`}
+      label={copyLabel}
     >
       <CopyIcon className="graphiql-toolbar-icon" aria-hidden="true" />
     </ToolbarButton>
   );
 
-  return children({ prettify, copy, merge });
+  const Render = children as FC<{
+    prettify: ReactNode;
+    copy: ReactNode;
+    merge: ReactNode;
+  }>;
+
+  return <Render prettify={prettify} copy={copy} merge={merge} />;
 };

@@ -1,4 +1,4 @@
-import { TranslationService } from '../services/translation-service';
+import type { TranslationService } from '../services/translation-service';
 
 /**
  * Type definition for the {@link TranslationContext}, which holds all related language data.

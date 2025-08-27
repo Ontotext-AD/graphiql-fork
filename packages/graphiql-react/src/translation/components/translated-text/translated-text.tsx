@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { TranslationContext } from '../../translation-context';
-import { TranslateTextProps } from '../../models/translate-text-props';
+import type { TranslateTextProps } from '../../models/translate-text-props';
 
 /**
  * TranslateText Component

@@ -30,6 +30,7 @@ import { getSchemaReference } from './schema-reference';
 import { DocExplorer } from './components';
 
 export const DOC_EXPLORER_PLUGIN: GraphiQLPlugin = {
+  id: 'documentation_explorer',
   title: 'Documentation Explorer',
   icon: function Icon() {
     const visiblePlugin = useGraphiQL(state => state.visiblePlugin);

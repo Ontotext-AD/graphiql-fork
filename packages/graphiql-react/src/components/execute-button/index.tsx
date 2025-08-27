@@ -3,11 +3,11 @@ import { useGraphiQL, useGraphiQLActions } from '../provider';
 import { PlayIcon, StopIcon } from '../../icons';
 import { DropdownMenu } from '../dropdown-menu';
 import { Tooltip } from '../tooltip';
-import { KEY_MAP, formatShortcutForOS } from '../../constants';
+import { KEY_MAP } from '../../constants';
 import { pick } from '../../utility';
 import './index.css';
 import { useContext } from 'react';
-import { TranslationContext } from '../translation';
+import { TranslationContext } from '../../translation';
 
 export const ExecuteButton: FC = () => {
   const { setOperationName, run, stop } = useGraphiQLActions();
@@ -33,6 +33,7 @@ export const ExecuteButton: FC = () => {
   const label = translationService.translate(
     buttonTranslationKey,
     currentLanguage,
+    {key: `${KEY_MAP.runQuery.key}`}
   );
   const buttonProps = {
     type: 'button' as const,

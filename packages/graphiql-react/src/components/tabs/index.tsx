@@ -4,7 +4,8 @@ import { Reorder } from 'framer-motion';
 import { CloseIcon } from '../../icons';
 import { UnStyledButton } from '../button';
 import './index.css';
-import {TranslationContext} from '../translation';
+import { TranslationContext } from '../../translation';
+import { Tooltip } from '../tooltip';
 
 interface TabProps extends ComponentPropsWithoutRef<typeof Reorder.Item> {
   isActive?: boolean;
@@ -51,18 +52,20 @@ const TabClose = forwardRef<
   ComponentPropsWithoutRef<'button'>
 >((props, ref) => {
     const { currentLanguage, translationService } = useContext(TranslationContext);
-    const btnCloseTabeTooltip = translationService.translate('graphiql.tab.btn.close_tab.tooltip', currentLanguage);
+    const btnCloseTabTooltip = translationService.translate('graphiql.tab.btn.close_tab.tooltip', currentLanguage);
 
     return (
-      <UnStyledButton
-        aria-label={btnCloseTabeTooltip}
-        {...props}
-        ref={ref}
-        type="button"
-        className={cn('graphiql-tab-close', props.className)}
-      >
-        <CloseIcon />
-      </UnStyledButton>
+      <Tooltip label={btnCloseTabTooltip}>
+        <UnStyledButton
+          aria-label={btnCloseTabTooltip}
+          {...props}
+          ref={ref}
+          type="button"
+          className={cn('graphiql-tab-close', props.className)}
+        >
+          <CloseIcon />
+        </UnStyledButton>
+      </Tooltip>
   )},
 );
 TabClose.displayName = 'Tab.Close';

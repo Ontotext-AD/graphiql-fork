@@ -20,6 +20,11 @@ export interface GraphiQLPlugin {
    * title, the provider component will throw an error.
    */
   title: string;
+
+  /**
+   * The unique identifier of the plugin.
+   */
+  id: string;
 }
 
 export interface PluginSlice {

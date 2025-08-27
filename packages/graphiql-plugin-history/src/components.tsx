@@ -1,5 +1,5 @@
 import type { QueryStoreItem } from '@graphiql/toolkit';
-import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { FC, MouseEventHandler, useContext, useEffect, useRef, useState } from 'react';
 import {
   cn,
   CloseIcon,
@@ -12,11 +12,12 @@ import {
   Button,
   Tooltip,
   UnStyledButton,
+  TranslateText,
+  TranslationContext
 } from '@graphiql/react';
 import { useHistory, useHistoryActions } from './context';
 
 import './style.css';
-import {TranslateText, TranslationContext} from '../translation';
 
 // Fix error from react-compiler
 // Support value blocks (conditional, logical, optional chaining, etc.) within a try/catch statement

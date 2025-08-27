@@ -1,7 +1,6 @@
 import type { FC } from 'react';
-import { MarkdownContent } from '@graphiql/react';
+import { MarkdownContent, TranslateText } from '@graphiql/react';
 import './deprecation-reason.css';
-import {TranslateText} from '../../translation';
 
 type DeprecationReasonProps = {
   /**
