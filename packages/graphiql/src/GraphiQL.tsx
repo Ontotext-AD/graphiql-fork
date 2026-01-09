@@ -4,12 +4,11 @@
  *  This source code is licensed under the MIT license found in the
  *  LICENSE file in the root directory of this source tree.
  */
-import {
-  type MouseEventHandler,
-  type ReactNode,
-  type FC,
-  type ComponentPropsWithoutRef,
-  useContext,
+import type {
+  MouseEventHandler,
+  ReactNode,
+  FC,
+  ComponentPropsWithoutRef,
 } from 'react';
 import { useState, Children, useRef, Fragment } from 'react';
 import {
@@ -34,9 +33,6 @@ import {
   cn,
   useGraphiQLActions,
   useMonaco,
-  TranslationProvider,
-  TranslationContext,
-  TranslateText,
 } from '@graphiql/react';
 import { HistoryStore, HISTORY_PLUGIN } from '@graphiql/plugin-history';
 import {
@@ -122,19 +118,17 @@ const GraphiQL_: FC<GraphiQLProps> = ({
     referencePlugin === DOC_EXPLORER_PLUGIN ? DocExplorerStore : Fragment;
 
   return (
-    <TranslationProvider {...props}>
-      <GraphiQLProvider
-        plugins={[...(referencePlugin ? [referencePlugin] : []), ...plugins]}
-        referencePlugin={referencePlugin}
-        {...props}
-      >
-        <HistoryToUse {...(hasHistoryPlugin && { maxHistoryLength })}>
-          <DocExplorerToUse>
-            <GraphiQLInterface {...interfaceProps}>{children}</GraphiQLInterface>
-          </DocExplorerToUse>
-        </HistoryToUse>
-      </GraphiQLProvider>
-    </TranslationProvider>
+    <GraphiQLProvider
+      plugins={[...(referencePlugin ? [referencePlugin] : []), ...plugins]}
+      referencePlugin={referencePlugin}
+      {...props}
+    >
+      <HistoryToUse {...(hasHistoryPlugin && { maxHistoryLength })}>
+        <DocExplorerToUse>
+          <GraphiQLInterface {...interfaceProps}>{children}</GraphiQLInterface>
+        </DocExplorerToUse>
+      </HistoryToUse>
+    </GraphiQLProvider>
   );
 };
 
@@ -193,7 +187,7 @@ const TAB_CLASS_PREFIX = 'graphiql-session-tab-';
 type ButtonHandler = MouseEventHandler<HTMLButtonElement>;
 
 const LABEL = {
-  newTab: 'graphiql.tab.btn.add_tab.tooltip',
+  newTab: 'New tab',
 };
 
 export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
@@ -229,9 +223,6 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
     ),
   );
   const hasMonaco = useMonaco(state => Boolean(state.monaco));
-
-  const { currentLanguage, translationService } =
-    useContext(TranslationContext);
 
   const PluginContent = visiblePlugin?.content;
 
@@ -350,8 +341,7 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
     changeTab(index);
   };
 
-  const editorToolsText = `${editorToolsResize.hiddenElement === 'second' ? 
-    translationService.translate('graphiql.editor.tools.btn.open_editor.tooltip', currentLanguage) : translationService.translate('graphiql.editor.tools.btn.close_editor.tooltip', currentLanguage)}`;
+  const editorToolsText = `${editorToolsResize.hiddenElement === 'second' ? 'Show' : 'Hide'} editor tools`;
 
   const EditorToolsIcon =
     editorToolsResize.hiddenElement === 'second'
@@ -395,7 +385,7 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
           onClick={handleToolsTabClick}
           data-name="variables"
         >
-          <TranslateText translationKey="graphiql.editor.tools.btn.variables.label" />
+          Variables
         </UnStyledButton>
         {isHeadersEditorEnabled && (
           <UnStyledButton
@@ -408,7 +398,7 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
             onClick={handleToolsTabClick}
             data-name="headers"
           >
-            <TranslateText translationKey="graphiql.editor.tools.btn.headers.label" />
+            Headers
           </UnStyledButton>
         )}
 
@@ -449,11 +439,6 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
   );
 
   const tabContainerRef = useRef<HTMLUListElement>(null!);
-
-  const addTabLabel = translationService.translate(
-    LABEL.newTab,
-    currentLanguage,
-  );
 
   return (
     <Tooltip.Provider>
@@ -510,12 +495,12 @@ export const GraphiQLInterface: FC<GraphiQLInterfaceProps> = ({
                   </Tab>
                 ))}
               </Tabs>
-              <Tooltip label={addTabLabel}>
+              <Tooltip label={LABEL.newTab}>
                 <UnStyledButton
                   type="button"
                   className="graphiql-tab-add"
                   onClick={addTab}
-                  aria-label={addTabLabel}
+                  aria-label={LABEL.newTab}
                 >
                   <PlusIcon aria-hidden="true" />
                 </UnStyledButton>

@@ -10,9 +10,9 @@ import {
   ImplementsIcon,
   RootTypeIcon,
   TypeIcon,
-  TranslateText
 } from '@graphiql/react';
 import './section.css';
+import {TranslateText} from '../../translation';
 
 type ExplorerSectionProps = {
   children: ReactNode;

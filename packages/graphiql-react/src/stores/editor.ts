@@ -89,12 +89,6 @@ export interface EditorSlice extends TabsState {
   defaultQuery?: string;
 
   /**
-   * Default title for newly created tabs.
-   * If omitted, falls back to the translated "graphiql.tab.default_title".
-   */
-   defaultTabTitle?: string;
-
-  /**
    * Invoked when the operation name changes. Possible triggers are:
    * - Editing the contents of the operation editor
    * - Selecting an operation for execution in a document that contains multiple
@@ -243,7 +237,6 @@ export interface EditorProps
     | 'defaultHeaders'
     | 'defaultQuery'
     | 'onCopyQuery'
-    | 'defaultTabTitle'
   > {
   /**
    * With this prop you can pass so-called "external" fragments that will be
@@ -299,7 +292,6 @@ type CreateEditorSlice = (
     | 'defaultHeaders'
     | 'onPrettifyQuery'
     | 'onCopyQuery'
-    | 'defaultTabTitle'
     | 'uriInstanceId'
   >,
 ) => StateCreator<
@@ -353,14 +345,14 @@ export const createEditorSlice: CreateEditorSlice = initial => (set, get) => {
 
   const $actions: EditorActions = {
     addTab() {
-      set(({ defaultHeaders, defaultTabTitle, onTabChange, tabs, activeTabIndex, actions }) => {
+      set(({ defaultHeaders, onTabChange, tabs, activeTabIndex, actions }) => {
         // Make sure the current tab stores the latest values
         const updatedValues = synchronizeActiveTabValues({
           tabs,
           activeTabIndex,
         });
         const updated = {
-          tabs: [...updatedValues.tabs, createTab({ headers: defaultHeaders, defaultTabTitle, })],
+          tabs: [...updatedValues.tabs, createTab({ headers: defaultHeaders })],
           activeTabIndex: updatedValues.tabs.length,
         };
         actions.storeTabs(updated);

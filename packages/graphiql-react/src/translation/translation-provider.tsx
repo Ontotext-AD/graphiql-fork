@@ -5,7 +5,7 @@ import { TranslationContext } from './translation-context';
 import en from '../assets/i18n/en.json';
 import fr from '../assets/i18n/fr.json';
 import { TranslationBundle } from './models/translation-bundle';
-import type { Translations } from './models/translations';
+import { Translations } from './models/translations';
 
 /**
  * TranslationProvider component is responsible for managing the translation state and providing the translation service
@@ -40,7 +40,7 @@ export const TranslationProvider = (props: any) => {
   );
 
   const [currentLanguage, setCurrentLanguage] = useState<string>(
-    selectedLanguage ?? 'en',
+    selectedLanguage || 'en',
   );
   const [supportedLanguages, setSupportedLanguages] = useState<string[]>(
     allSupportedLanguages,
@@ -86,17 +86,18 @@ export const TranslationProvider = (props: any) => {
 const getTranslationBundles = (translations: Translations) => {
   const translationBundles: Record<string, TranslationBundle> =
     getInternalTranslationBundles();
-
+  if (!translations) {
+    return translationBundles;
+  }
   for (const language of Object.keys(translations)) {
     const internalTranslationBundle = translationBundles[language];
     const translationConfiguration = translations[language];
-    if (!translationConfiguration) {
-      continue;
-    }
     if (internalTranslationBundle) {
       internalTranslationBundle.merge(translationConfiguration);
     } else {
-      translationBundles[language] = new TranslationBundle(translationConfiguration);
+      translationBundles[language] = new TranslationBundle(
+        translationConfiguration,
+      );
     }
   }
   return translationBundles;

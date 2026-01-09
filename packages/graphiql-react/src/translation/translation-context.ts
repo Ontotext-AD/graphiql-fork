@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { TranslationContextType } from './models/translation-context-type';
+import { TranslationContextType } from './models/translation-context-type';
 import { TranslationService } from './services/translation-service';
 
 /**

@@ -1,5 +1,4 @@
 import {
-  ABORT_QUERY,
   Fetcher,
   fillLeafs,
   formatError,
@@ -287,12 +286,9 @@ export const createExecutionSlice: CreateExecutionSlice =
               }
             };
             const opName = overrideOperationName ?? operationName;
-
-            const abortController = new AbortController();
-
             const fetch = fetcher(
               { query, variables, operationName: opName },
-              { abortController, headers, documentAST },
+              { headers, documentAST },
             );
 
             const value = await fetch;
@@ -315,14 +311,10 @@ export const createExecutionSlice: CreateExecutionSlice =
               });
               set({ subscription: newSubscription });
             } else if (isAsyncIterable(value)) {
-              set({
-                subscription: {
-                  async unsubscribe() {
-                    await value[Symbol.asyncIterator]().return?.();
-                    abortController.abort(ABORT_QUERY);
-                  },
-                },
-              });
+              const newSubscription = {
+                unsubscribe: () => value[Symbol.asyncIterator]().return?.(),
+              };
+              set({ subscription: newSubscription });
               for await (const result of value) {
                 handleResponse(result);
               }
