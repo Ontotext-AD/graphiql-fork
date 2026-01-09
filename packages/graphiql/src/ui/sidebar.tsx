@@ -1,4 +1,4 @@
-import { FC, type MouseEventHandler, useContext, useEffect, useState } from 'react';
+import { FC, type MouseEventHandler, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -16,18 +16,15 @@ import {
   useGraphiQL,
   useGraphiQLActions,
   VisuallyHidden,
-  TranslationContext,
-  TranslateText,
-  LanguageSelector
 } from '@graphiql/react';
 import { ShortKeys } from './short-keys';
 
 type ButtonHandler = MouseEventHandler<HTMLButtonElement>;
 
 const LABEL = {
-  refetchSchema: 'graphiql.sidebar.btn.refresh_graphql_schema',
-  shortCutDialog: 'graphiql.sidebar.btn.open_short_keys_dialog',
-  settingsDialogs: 'graphiql.sidebar.btn.open_settings_dialog',
+  refetchSchema: `Re-fetch GraphQL schema (${KEY_MAP.refetchSchema.key})`,
+  shortCutDialog: 'Open short keys dialog',
+  settingsDialogs: 'Open settings dialog',
 };
 
 const THEMES = ['light', 'dark', 'system'] as const;
@@ -75,9 +72,6 @@ export const Sidebar: FC<SidebarProps> = ({
       'storage',
     ),
   );
-
-  const { currentLanguage, translationService } =
-    useContext(TranslationContext);
 
   useEffect(() => {
     if (forcedTheme === 'system') {
@@ -161,28 +155,11 @@ export const Sidebar: FC<SidebarProps> = ({
     }
   };
 
-  const refetchSchemaLabel = translationService.translate(
-    LABEL.refetchSchema,
-    currentLanguage,
-    {key: `${KEY_MAP.refetchSchema.key}`}
-  );
-  const shortCutDialogLabel = translationService.translate(
-    LABEL.shortCutDialog,
-    currentLanguage
-  );
-  const settingsDialogsLabel = translationService.translate(
-    LABEL.settingsDialogs,
-    currentLanguage
-  );
-
   return (
     <div className="graphiql-sidebar">
       {plugins.map((plugin, index) => {
         const isVisible = plugin === visiblePlugin;
-        const pluginTitle = translationService.translate(`plugin.${plugin.id}.title`, currentLanguage);
-        const labelKey = 'plugin.btn.' + (isVisible ? 'hide_plugin' : 'show_plugin');
-        const label = translationService.translate(labelKey, currentLanguage, {pluginTitle});
-
+        const label = `${isVisible ? 'Hide' : 'Show'} ${plugin.title}`;
         return (
           <Tooltip key={plugin.title} label={label}>
             <UnStyledButton
@@ -197,12 +174,12 @@ export const Sidebar: FC<SidebarProps> = ({
           </Tooltip>
         );
       })}
-      <Tooltip label={refetchSchemaLabel}>
+      <Tooltip label={LABEL.refetchSchema}>
         <UnStyledButton
           type="button"
           disabled={isIntrospecting}
           onClick={introspect}
-          aria-label={refetchSchemaLabel}
+          aria-label={LABEL.refetchSchema}
           style={{ marginTop: 'auto' }}
         >
           <ReloadIcon
@@ -211,22 +188,22 @@ export const Sidebar: FC<SidebarProps> = ({
           />
         </UnStyledButton>
       </Tooltip>
-      <Tooltip label={shortCutDialogLabel}>
+      <Tooltip label={LABEL.shortCutDialog}>
         <UnStyledButton
           type="button"
           data-value="short-keys"
           onClick={handleShowDialog}
-          aria-label={shortCutDialogLabel}
+          aria-label={LABEL.shortCutDialog}
         >
           <KeyboardShortcutIcon aria-hidden="true" />
         </UnStyledButton>
       </Tooltip>
-      <Tooltip label={settingsDialogsLabel}>
+      <Tooltip label={LABEL.settingsDialogs}>
         <UnStyledButton
           type="button"
           data-value="settings"
           onClick={handleShowDialog}
-          aria-label={settingsDialogsLabel}
+          aria-label={LABEL.settingsDialogs}
         >
           <SettingsIcon aria-hidden="true" />
         </UnStyledButton>
@@ -237,7 +214,7 @@ export const Sidebar: FC<SidebarProps> = ({
       >
         <div className="graphiql-dialog-header">
           <Dialog.Title className="graphiql-dialog-title">
-            <TranslateText translationKey="dialog.short_keys.title" />
+            Short Keys
           </Dialog.Title>
           <VisuallyHidden>
             {/* Fixes Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent} */}
@@ -258,7 +235,7 @@ export const Sidebar: FC<SidebarProps> = ({
       >
         <div className="graphiql-dialog-header">
           <Dialog.Title className="graphiql-dialog-title">
-            <TranslateText translationKey="dialog.settings.title" />
+            Settings
           </Dialog.Title>
           <VisuallyHidden>
             {/* Fixes Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent} */}
@@ -269,25 +246,17 @@ export const Sidebar: FC<SidebarProps> = ({
           </VisuallyHidden>
           <Dialog.Close />
         </div>
-        <div className="graphiql-dialog-section">
-          <div>
-            <div className="graphiql-dialog-section-title">
-              <TranslateText translationKey="dialog.settings.language.title" />
-            </div>
-            <div className="graphiql-dialog-section-caption">
-              <TranslateText translationKey="dialog.settings.language.description" />
-            </div>
-          </div>
-          <LanguageSelector />
-        </div>
         {showPersistHeadersSettings ? (
           <div className="graphiql-dialog-section">
             <div>
               <div className="graphiql-dialog-section-title">
-                <TranslateText translationKey="dialog.settings.persisted_headers.title" />
+                Persist headers
               </div>
               <div className="graphiql-dialog-section-caption">
-                <TranslateText translationKey="dialog.settings.persisted_headers.description" />
+                Save headers upon reloading.{' '}
+                <span className="graphiql-warning-text">
+                  Only enable if you trust this device.
+                </span>
               </div>
             </div>
             <ButtonGroup>
@@ -298,7 +267,7 @@ export const Sidebar: FC<SidebarProps> = ({
                 data-value="true"
                 onClick={handlePersistHeaders}
               >
-                <TranslateText translationKey="dialog.settings.persisted_headers.btn.on" />
+                On
               </Button>
               <Button
                 type="button"
@@ -306,7 +275,7 @@ export const Sidebar: FC<SidebarProps> = ({
                 className={cn(!shouldPersistHeaders && 'active')}
                 onClick={handlePersistHeaders}
               >
-                <TranslateText translationKey="dialog.settings.persisted_headers.btn.off" />
+                Off
               </Button>
             </ButtonGroup>
           </div>
@@ -314,11 +283,9 @@ export const Sidebar: FC<SidebarProps> = ({
         {!forcedTheme && (
           <div className="graphiql-dialog-section">
             <div>
-              <div className="graphiql-dialog-section-title">
-                <TranslateText translationKey="dialog.settings.theme.title" />
-              </div>
+              <div className="graphiql-dialog-section-title">Theme</div>
               <div className="graphiql-dialog-section-caption">
-                <TranslateText translationKey="dialog.settings.theme.description" />
+                Adjust how the interface appears.
               </div>
             </div>
             <ButtonGroup>
@@ -327,7 +294,7 @@ export const Sidebar: FC<SidebarProps> = ({
                 className={cn(theme === null && 'active')}
                 onClick={handleChangeTheme}
               >
-                <TranslateText translationKey="dialog.settings.theme.btn.system" />
+                System
               </Button>
               <Button
                 type="button"
@@ -335,7 +302,7 @@ export const Sidebar: FC<SidebarProps> = ({
                 data-theme="light"
                 onClick={handleChangeTheme}
               >
-                <TranslateText translationKey="dialog.settings.theme.btn.light" />
+                Light
               </Button>
               <Button
                 type="button"
@@ -343,18 +310,16 @@ export const Sidebar: FC<SidebarProps> = ({
                 data-theme="dark"
                 onClick={handleChangeTheme}
               >
-                <TranslateText translationKey="dialog.settings.theme.btn.dark" />
+                Dark
               </Button>
             </ButtonGroup>
           </div>
         )}
         <div className="graphiql-dialog-section">
           <div>
-            <div className="graphiql-dialog-section-title">
-              <TranslateText translationKey="dialog.settings.clear_storage.title" />
-            </div>
+            <div className="graphiql-dialog-section-title">Clear storage</div>
             <div className="graphiql-dialog-section-caption">
-              <TranslateText translationKey="dialog.settings.clear_storage.description" />
+              Remove all locally stored data and start fresh.
             </div>
           </div>
           <Button
@@ -363,15 +328,10 @@ export const Sidebar: FC<SidebarProps> = ({
             disabled={clearStorageStatus === 'success'}
             onClick={handleClearData}
           >
-            {clearStorageStatus === 'success' && (
-              <TranslateText translationKey="dialog.settings.clear_storage.btn.cleared_data" />
-            )}
-            {clearStorageStatus === 'error' && (
-              <TranslateText translationKey="dialog.settings.clear_storage.btn.error" />
-            )}
-            {!clearStorageStatus && (
-              <TranslateText translationKey="dialog.settings.clear_storage.btn.clear_data" />
-            )}
+            {{
+              success: 'Cleared data',
+              error: 'Failed',
+            }[clearStorageStatus!] || 'Clear data'}
           </Button>
         </div>
       </Dialog>

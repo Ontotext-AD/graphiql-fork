@@ -42,8 +42,6 @@ import {
   STORAGE_KEY,
 } from '../constants';
 import { getDefaultTabState } from '../utility/tabs';
-import type { TranslationContextProviderProps } from '../translation/models/translation-context-provider-props';
-import { TranslationContext } from '../translation';
 
 interface GraphiQLProviderProps
   extends EditorProps,
@@ -51,8 +49,7 @@ interface GraphiQLProviderProps
     PluginProps,
     SchemaProps,
     ThemeProps,
-    StorageProps,
-    TranslationContextProviderProps {
+    StorageProps {
   children: ReactNode;
 }
 
@@ -172,8 +169,6 @@ const InnerGraphiQLProvider: FC<GraphiQLProviderProps> = ({
 
   ...props
 }) => {
-  const { currentLanguage, translationService } = useContext(TranslationContext);
-  const tabTitle = translationService.translate('graphiql.tab.default_title', currentLanguage);
   const storeRef = useRef<GraphiQLStore>(null!);
   const uriInstanceId = useId();
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- false positive
@@ -220,7 +215,6 @@ const InnerGraphiQLProvider: FC<GraphiQLProviderProps> = ({
       const { tabs, activeTabIndex } = getDefaultTabState({
         defaultHeaders,
         defaultQuery,
-        defaultTabTitle: tabTitle,
         defaultTabs,
         headers,
         query,
@@ -242,7 +236,6 @@ const InnerGraphiQLProvider: FC<GraphiQLProviderProps> = ({
           activeTabIndex,
           defaultHeaders,
           defaultQuery,
-          defaultTabTitle: tabTitle,
           externalFragments: getExternalFragments(externalFragments),
           initialHeaders: headers ?? defaultHeaders ?? '',
           initialQuery:
@@ -324,15 +317,6 @@ const InnerGraphiQLProvider: FC<GraphiQLProviderProps> = ({
     actions.setPlugins(plugins);
     actions.setVisiblePlugin(visiblePlugin);
   }, [plugins, visiblePlugin]);
-
-  // Keep defaultTabTitle in sync with language changes (or prop changes).
-  useEffect(() => {
-    const store = storeRef.current;
-    const state = store.getState();
-    if (state.defaultTabTitle !== tabTitle) {
-      store.setState({ defaultTabTitle: tabTitle });
-    }
-  }, [tabTitle]);
 
   /**
    * Synchronize prop changes with state

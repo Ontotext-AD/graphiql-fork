@@ -1,4 +1,4 @@
-import type { Translation } from './translations';
+import { Translation } from './translations';
 
 /**
  * Class representing a bundle of translations.

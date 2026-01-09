@@ -1,9 +1,10 @@
 import type { FC } from 'react';
 import type { GraphQLArgument } from 'graphql';
-import { MarkdownContent, TranslateText } from '@graphiql/react';
+import { MarkdownContent } from '@graphiql/react';
 import { DefaultValue } from './default-value';
 import { TypeLink } from './type-link';
 import './argument.css';
+import {TranslateText} from '../../translation';
 
 type ArgumentProps = {
   /**

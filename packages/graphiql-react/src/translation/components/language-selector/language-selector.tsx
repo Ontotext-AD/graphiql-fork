@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { TranslationContext } from '../../translation-context';
-import { DropdownMenu } from '../../../components';
+import { DropdownMenu } from '../../../ui';
 import { ChevronDownIcon, ChevronUpIcon } from '../../../icons';
 import './language-selector.css';
 

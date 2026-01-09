@@ -1,9 +1,10 @@
 import type { FC } from 'react';
 import type { GraphQLSchema } from 'graphql';
-import { MarkdownContent, TranslateText } from '@graphiql/react';
+import { MarkdownContent } from '@graphiql/react';
 import { ExplorerSection } from './section';
 import { TypeLink } from './type-link';
 import './schema-documentation.css';
+import {TranslateText} from '../../translation';
 
 type SchemaDocumentationProps = {
   /**

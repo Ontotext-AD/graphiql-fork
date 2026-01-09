@@ -4,7 +4,6 @@ import './style.css';
 import { History } from './components';
 
 export const HISTORY_PLUGIN: GraphiQLPlugin = {
-  id: 'history',
   title: 'History',
   icon: HistoryIcon,
   content: History,

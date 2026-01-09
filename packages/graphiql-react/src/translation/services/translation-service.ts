@@ -1,4 +1,4 @@
-import type { TranslationBundle } from '../models/translation-bundle';
+import { TranslationBundle } from '../models/translation-bundle';
 
 /**
  * Service for managing translations across multiple languages.
@@ -72,7 +72,7 @@ export class TranslationService {
     }
 
     // Fallback to the default language if translation not found
-    translation ??=
+    translation ||=
       this.translationBundles[this.defaultLanguage]?.getTranslation(key);
 
     return translation ? this.applyParameters(translation, params) : key;
@@ -99,14 +99,16 @@ export class TranslationService {
     translation: string,
     parameters: Record<string, string> = {},
   ): string {
-    if (Object.keys(parameters).length === 0) {
+    if (!parameters || Object.keys(parameters).length === 0) {
       return translation;
     }
 
     let filledTranslation = translation;
     for (const key in parameters) {
-      const value = parameters[key] ?? key;
-      filledTranslation = filledTranslation.replaceAll(`{{${key}}}`, value);
+      filledTranslation = filledTranslation.replaceAll(
+        `{{${key}}}`,
+        parameters[key],
+      );
     }
     return filledTranslation;
   }
