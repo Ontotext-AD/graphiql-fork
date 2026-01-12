@@ -103,6 +103,7 @@ export function useQueryEditor(
   const merge = useMergeQuery({ caller: caller || useQueryEditor });
   const prettify = usePrettifyEditors({ caller: caller || useQueryEditor });
   const ref = useRef<HTMLDivElement>(null);
+  const initialThemeRef = useRef(editorTheme);
   const codeMirrorRef = useRef<CodeMirrorType>();
 
   const onClickReferenceRef = useRef<
@@ -170,7 +171,7 @@ export function useQueryEditor(
         tabSize: 2,
         foldGutter: true,
         mode: 'graphql',
-        theme: editorTheme,
+        theme: initialThemeRef.current,
         autoCloseBrackets: true,
         matchBrackets: true,
         showCursorWhenSelecting: true,
@@ -281,8 +282,9 @@ export function useQueryEditor(
     return () => {
       isActive = false;
     };
-  }, [editorTheme, initialQuery, readOnly, setQueryEditor]);
+  }, [initialQuery, readOnly, setQueryEditor]);
 
+  useSynchronizeOption(queryEditor, 'theme', editorTheme);
   useSynchronizeOption(queryEditor, 'keyMap', keyMap);
 
   /**

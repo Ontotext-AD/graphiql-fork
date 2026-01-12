@@ -47,6 +47,7 @@ export function useHeaderEditor(
   const merge = useMergeQuery({ caller: caller || useHeaderEditor });
   const prettify = usePrettifyEditors({ caller: caller || useHeaderEditor });
   const ref = useRef<HTMLDivElement>(null);
+  const initialThemeRef = useRef(editorTheme);
 
   useEffect(() => {
     let isActive = true;
@@ -70,7 +71,7 @@ export function useHeaderEditor(
         lineNumbers: true,
         tabSize: 2,
         mode: { name: 'javascript', json: true },
-        theme: editorTheme,
+        theme: initialThemeRef.current,
         autoCloseBrackets: true,
         matchBrackets: true,
         showCursorWhenSelecting: true,
@@ -110,8 +111,9 @@ export function useHeaderEditor(
     return () => {
       isActive = false;
     };
-  }, [editorTheme, initialHeaders, readOnly, setHeaderEditor]);
+  }, [initialHeaders, readOnly, setHeaderEditor]);
 
+  useSynchronizeOption(headerEditor, 'theme', editorTheme);
   useSynchronizeOption(headerEditor, 'keyMap', keyMap);
 
   useChangeHandler(

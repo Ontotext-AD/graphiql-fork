@@ -52,6 +52,7 @@ export function useResponseEditor(
       caller: caller || useResponseEditor,
     });
   const ref = useRef<HTMLDivElement>(null);
+  const initialThemeRef = useRef(editorTheme);
 
   const responseTooltipRef = useRef<ResponseTooltipType | undefined>(
     responseTooltip,
@@ -124,7 +125,7 @@ export function useResponseEditor(
         value: initialResponse,
         lineWrapping: true,
         readOnly: true,
-        theme: editorTheme,
+        theme: initialThemeRef.current,
         mode: 'graphql-results',
         foldGutter: true,
         gutters: ['CodeMirror-foldgutter'],
@@ -139,8 +140,9 @@ export function useResponseEditor(
     return () => {
       isActive = false;
     };
-  }, [editorTheme, initialResponse, setResponseEditor]);
+  }, [initialResponse, setResponseEditor]);
 
+  useSynchronizeOption(responseEditor, 'theme', editorTheme);
   useSynchronizeOption(responseEditor, 'keyMap', keyMap);
 
   useEffect(() => {
