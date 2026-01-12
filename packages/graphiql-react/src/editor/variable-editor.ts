@@ -53,6 +53,7 @@ export function useVariableEditor(
   const prettify = usePrettifyEditors({ caller: caller || useVariableEditor });
   const ref = useRef<HTMLDivElement>(null);
   const codeMirrorRef = useRef<CodeMirrorType>();
+  const initialThemeRef = useRef(editorTheme);
 
   useEffect(() => {
     let isActive = true;
@@ -79,7 +80,7 @@ export function useVariableEditor(
         lineNumbers: true,
         tabSize: 2,
         mode: 'graphql-variables',
-        theme: editorTheme,
+        theme: initialThemeRef.current,
         autoCloseBrackets: true,
         matchBrackets: true,
         showCursorWhenSelecting: true,
@@ -130,8 +131,9 @@ export function useVariableEditor(
     return () => {
       isActive = false;
     };
-  }, [editorTheme, initialVariables, readOnly, setVariableEditor]);
+  }, [initialVariables, readOnly, setVariableEditor]);
 
+  useSynchronizeOption(variableEditor, 'theme', editorTheme);
   useSynchronizeOption(variableEditor, 'keyMap', keyMap);
 
   useChangeHandler(
